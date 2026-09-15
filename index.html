@@ -4,53 +4,58 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Buckland Analytics</title>
-<meta name="description" content="Spatial analysis for housing, retrofit, and healthcare organisations. We rank where to invest by impact, not guesswork.">
+<meta name="description" content="Spatial analysis that tells you where to invest. Neighbourhood-level rankings for retrofit, housing, site selection and any place-based decision.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0}
 
 :root{
-  --bg:#fafaf9;
-  --text:#1a1a1a;
-  --heading:#1a2e3b;
+  --bg:#f7f6f3;
+  --text:#2c2c2c;
+  --heading:#1a1a1a;
   --accent:#267c6d;
   --accent-hover:#1e6558;
-  --muted:#64707a;
-  --rule:#e0dfdd;
-  --surface:#f0efed;
+  --muted:#5f6368;
+  --rule:#d8d6d1;
+  --surface:#edecea;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 
 @media(prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#141a1e;
-    --text:#d4d4d2;
-    --heading:#e0e4e6;
+    --bg:#1a1d20;
+    --text:#c8c8c4;
+    --heading:#e2e2de;
     --accent:#3db89f;
     --accent-hover:#5ccdb6;
-    --muted:#8a949c;
-    --rule:#2a3038;
-    --surface:#1c2228;
+    --muted:#8a8f96;
+    --rule:#33383e;
+    --surface:#24282d;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#141a1e;
-  --text:#d4d4d2;
-  --heading:#e0e4e6;
+  --bg:#1a1d20;
+  --text:#c8c8c4;
+  --heading:#e2e2de;
   --accent:#3db89f;
   --accent-hover:#5ccdb6;
-  --muted:#8a949c;
-  --rule:#2a3038;
-  --surface:#1c2228;
+  --muted:#8a8f96;
+  --rule:#33383e;
+  --surface:#24282d;
 }
 
 html{
-  font:17px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font:17px/1.65 var(--sans);
   color:var(--text);
   background:var(--bg);
   -webkit-font-smoothing:antialiased;
 }
 
 body{
-  max-width:720px;
+  max-width:680px;
   margin:0 auto;
   padding:0 24px;
 }
@@ -58,132 +63,142 @@ body{
 a{color:var(--accent);text-decoration:none}
 a:hover{color:var(--accent-hover)}
 
-/* ---- header ---- */
-.site-header{
+header{
   display:flex;
   justify-content:space-between;
   align-items:baseline;
-  padding:32px 0 28px;
+  padding:36px 0 32px;
   border-bottom:1px solid var(--rule);
   flex-wrap:wrap;
   gap:8px 24px;
 }
-.site-name{
-  font-size:18px;
-  font-weight:700;
+.name{
+  font:600 18px/1.3 var(--serif);
   color:var(--heading);
-  letter-spacing:-0.01em;
 }
-.site-phone{
+.phone{
   font-size:15px;
   color:var(--muted);
   font-variant-numeric:tabular-nums;
 }
-.site-phone a{color:var(--muted)}
-.site-phone a:hover{color:var(--accent)}
+.phone a{color:var(--muted)}
+.phone a:hover{color:var(--accent)}
 
-/* ---- sections ---- */
 section{
-  padding:48px 0;
+  padding:44px 0;
   border-bottom:1px solid var(--rule);
 }
 section:last-of-type{border-bottom:none}
 
 h1{
-  font-size:28px;
-  line-height:1.25;
-  font-weight:700;
+  font:600 30px/1.25 var(--serif);
   color:var(--heading);
-  letter-spacing:-0.02em;
+  letter-spacing:-0.01em;
   text-wrap:balance;
-  max-width:580px;
+  max-width:600px;
 }
 
-.lede{
+.opening{
   margin-top:20px;
   font-size:18px;
-  line-height:1.55;
-  color:var(--muted);
-  max-width:560px;
-}
-
-h2{
-  font-size:14px;
-  font-weight:600;
-  letter-spacing:0.04em;
-  text-transform:uppercase;
-  color:var(--muted);
-  margin-bottom:28px;
-}
-
-/* ---- service items ---- */
-.services{
-  display:flex;
-  flex-direction:column;
-  gap:32px;
-}
-.service h3{
-  font-size:18px;
-  font-weight:600;
-  color:var(--heading);
-  margin-bottom:6px;
-}
-.service p{
+  line-height:1.6;
   color:var(--text);
   max-width:580px;
 }
-.service .tag{
-  display:inline-block;
-  font-size:13px;
-  font-weight:500;
-  color:var(--accent);
-  margin-top:8px;
+
+h2{
+  font:600 22px/1.3 var(--serif);
+  color:var(--heading);
+  margin-bottom:20px;
 }
 
-/* ---- demo ---- */
-.demo-link{
+h3{
+  font:600 18px/1.35 var(--serif);
+  color:var(--heading);
+  margin-bottom:6px;
+}
+
+p+p{margin-top:14px}
+
+.services{
+  display:flex;
+  flex-direction:column;
+  gap:36px;
+}
+.service p{
+  max-width:600px;
+}
+.service .who{
+  font-size:15px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.demo{
   display:block;
-  padding:24px;
+  padding:20px 24px;
   background:var(--surface);
   border:1px solid var(--rule);
-  border-radius:4px;
+  border-radius:3px;
   margin-top:16px;
   transition:border-color 0.15s;
 }
-.demo-link:hover{border-color:var(--accent)}
-.demo-link .label{
-  font-size:15px;
-  font-weight:600;
+.demo:hover{border-color:var(--accent)}
+.demo strong{
+  display:block;
+  font-family:var(--serif);
+  font-size:16px;
   color:var(--heading);
 }
-.demo-link .url{
+.demo span{
   font-size:14px;
   color:var(--muted);
   margin-top:4px;
+  display:block;
   font-family:"SF Mono",SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
   word-break:break-all;
 }
 
-/* ---- contact ---- */
-.contact-grid{
+.steps{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  counter-reset:step;
+}
+.step{
+  display:flex;
+  gap:16px;
+  align-items:baseline;
+}
+.step::before{
+  counter-increment:step;
+  content:counter(step);
+  flex-shrink:0;
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font:600 14px/1 var(--sans);
+  color:var(--accent);
+  border:1.5px solid var(--accent);
+  border-radius:50%;
+}
+.step p{max-width:560px}
+
+.contact-row{
   display:flex;
   flex-wrap:wrap;
   gap:12px 40px;
 }
-.contact-item{
-  font-size:16px;
-}
-.contact-item .contact-label{
+.contact-item .label{
   font-size:13px;
   font-weight:500;
   color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:0.03em;
   display:block;
   margin-bottom:2px;
 }
 
-/* ---- footer ---- */
 footer{
   padding:32px 0;
   font-size:14px;
@@ -192,80 +207,104 @@ footer{
 
 @media(max-width:500px){
   html{font-size:16px}
-  h1{font-size:24px}
+  h1{font-size:26px}
+  h2{font-size:20px}
   section{padding:36px 0}
-  .site-header{padding:24px 0 20px}
+  header{padding:24px 0 20px}
+  .step{gap:12px}
 }
 </style>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="site-name">Buckland Analytics</div>
-  <div class="site-phone"><a href="tel:+447915585402">07915 585402</a></div>
+<header>
+  <div class="name">Buckland Analytics</div>
+  <div class="phone"><a href="tel:+447915585402">07915 585402</a></div>
 </header>
 
 <section>
-  <h1>We rank where to invest so you spend in the places that need it most</h1>
-  <p class="lede">Spatial analysis for housing associations, retrofit delivery bodies, and planning consultancies. You tell us your area. We tell you which neighbourhoods to prioritise and why.</p>
+  <h1>You make decisions about places. We make sure they're backed by data.</h1>
+  <p class="opening">We build neighbourhood-level models that rank where to invest, where to open, and where to intervene. You tell us your area and your question. We give you a ranked answer you can act on.</p>
 </section>
 
 <section>
-  <h2>What you get</h2>
+  <h2>What we help with</h2>
   <div class="services">
 
     <div class="service">
-      <h3>Retrofit targeting</h3>
-      <p>A ranked list of your top priority neighbourhoods for Warm Homes: Local Grant delivery. Which LSOAs have the most D&ndash;G rated homes, the highest fuel poverty, and the least retrofit activity. Covers your entire delivery area.</p>
-      <span class="tag">Free first area</span>
+      <h3>Retrofit and energy efficiency targeting</h3>
+      <p>You're delivering Warm Homes: Local Grant or a similar programme and you need to know which neighbourhoods to hit first. We rank every LSOA in your delivery area by fuel poverty, EPC rating and deprivation so you spend where the need is highest.</p>
+      <p class="who">Housing associations, local authorities, retrofit delivery bodies</p>
     </div>
 
     <div class="service">
-      <h3>Housing land supply assessment</h3>
-      <p>A one-page breakdown of a council&rsquo;s claimed five-year supply against actual delivery rates by site type. Which categories are under-delivering, where the gap is, and what the real number looks like.</p>
-      <span class="tag">Free first council</span>
+      <h3>Housing land supply analysis</h3>
+      <p>A council claims five years of housing supply. Your client thinks the number is wrong. We break down the claim by site type and delivery rate and show you where the gap is. You get a one-page analysis with the real figure and the evidence behind it.</p>
+      <p class="who">Planning consultancies, developers, housing lawyers</p>
     </div>
 
     <div class="service">
       <h3>Site selection</h3>
-      <p>Ranked candidate locations for your next site, scored on catchment demand, competition, and cannibalisation of your existing branches. Built for multi-site healthcare operators making six-figure lease decisions.</p>
-      <span class="tag">Free diagnostic on your existing estate</span>
+      <p>You're choosing where to open your next location. We score candidates by catchment demand, local competition and how much trade you'd pull from your existing branches. The output is a ranked shortlist with the numbers behind each recommendation.</p>
+      <p class="who">Dental groups, pharmacy chains, veterinary practices, any multi-site operator</p>
+    </div>
+
+    <div class="service">
+      <h3>Custom spatial analysis</h3>
+      <p>If your question depends on geography we can probably help. We work with Census, EPC, IMD, fuel poverty, planning and health data at neighbourhood level across England. Tell us the decision you're trying to make and we'll tell you whether our data covers it.</p>
+      <p class="who">Anyone making a place-based investment decision</p>
     </div>
 
   </div>
 </section>
 
 <section>
-  <h2>Live demo</h2>
-  <p>A neighbourhood-level targeting dashboard built for WH:LG delivery bodies. EPC, fuel poverty, and deprivation data ranked at LSOA level across Liverpool City Region.</p>
-  <a class="demo-link" href="https://temporary-quick-juniper-v8f39bh.vercel.app" target="_blank" rel="noopener">
-    <div class="label">WH:LG Spatial Targeting Dashboard</div>
-    <div class="url">temporary-quick-juniper-v8f39bh.vercel.app</div>
+  <h2>See a working example</h2>
+  <p>This is a neighbourhood targeting dashboard we built for WH:LG delivery across Liverpool City Region. It ranks LSOAs by fuel poverty, EPC band and deprivation so a delivery body can see where to focus.</p>
+  <a class="demo" href="https://temporary-quick-juniper-v8f39bh.vercel.app" target="_blank" rel="noopener">
+    <strong>WH:LG Spatial Targeting Dashboard — Liverpool City Region</strong>
+    <span>temporary-quick-juniper-v8f39bh.vercel.app</span>
   </a>
 </section>
 
 <section>
-  <h2>About</h2>
-  <p>Buckland Analytics is a spatial analysis consultancy based in Manchester. We build neighbourhood-level models covering all 6,800+ English MSOAs, combining EPC, Census, IMD, and fuel poverty data to produce ranked investment priorities that hold up to scrutiny.</p>
-  <p style="margin-top:12px">Our work is currently under peer review. We also build live dashboards and evaluation frameworks for place-based programmes.</p>
+  <h2>What happens when you get in touch</h2>
+  <div class="steps">
+    <div class="step">
+      <p>You call or email. We spend ten minutes understanding what you're trying to decide and whether our data covers it.</p>
+    </div>
+    <div class="step">
+      <p>If we can help, we run the first analysis free. Usually takes a day. You get a ranked output for your area that you can use immediately.</p>
+    </div>
+    <div class="step">
+      <p>If you want to go further — more areas, ongoing monitoring, a custom dashboard — we discuss scope and cost. No obligation from the first piece of work.</p>
+    </div>
+  </div>
 </section>
 
 <section>
-  <h2>Contact</h2>
-  <div class="contact-grid">
+  <h2>How this works under the hood</h2>
+  <p>We use a Bayesian spatial model (BYM2) that covers all 6,800+ middle-layer super output areas in England. It combines EPC, Census 2021, IMD and fuel poverty data to produce rankings that account for local variation rather than averaging over large areas.</p>
+  <p>The methodology is currently under peer review. We also build live dashboards and evaluation frameworks for place-based programmes.</p>
+  <p>Before starting Buckland Analytics I worked at Buro Happold, the engineering consultancy, on spatial planning and infrastructure projects.</p>
+</section>
+
+<section>
+  <h2>Get in touch</h2>
+  <div class="contact-row">
     <div class="contact-item">
-      <span class="contact-label">Phone</span>
+      <span class="label">Phone</span>
       <a href="tel:+447915585402">07915 585402</a>
     </div>
     <div class="contact-item">
-      <span class="contact-label">Email</span>
+      <span class="label">Email</span>
       <a href="mailto:jules@bucklandanalytics.co.uk">jules@bucklandanalytics.co.uk</a>
     </div>
   </div>
 </section>
 
 <footer>
-  &copy; 2026 Buckland Analytics
+  &copy; 2026 Buckland Analytics &middot; Manchester
 </footer>
 
 </body>
