@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buckland Analytics</title>
+<meta name="description" content="Spatial analysis for housing, retrofit, and healthcare organisations. We rank where to invest by impact, not guesswork.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0}
+
+:root{
+  --bg:#fafaf9;
+  --text:#1a1a1a;
+  --heading:#1a2e3b;
+  --accent:#267c6d;
+  --accent-hover:#1e6558;
+  --muted:#64707a;
+  --rule:#e0dfdd;
+  --surface:#f0efed;
+}
+
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#141a1e;
+    --text:#d4d4d2;
+    --heading:#e0e4e6;
+    --accent:#3db89f;
+    --accent-hover:#5ccdb6;
+    --muted:#8a949c;
+    --rule:#2a3038;
+    --surface:#1c2228;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141a1e;
+  --text:#d4d4d2;
+  --heading:#e0e4e6;
+  --accent:#3db89f;
+  --accent-hover:#5ccdb6;
+  --muted:#8a949c;
+  --rule:#2a3038;
+  --surface:#1c2228;
+}
+
+html{
+  font:17px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
+
+body{
+  max-width:720px;
+  margin:0 auto;
+  padding:0 24px;
+}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-hover)}
+
+/* ---- header ---- */
+.site-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  padding:32px 0 28px;
+  border-bottom:1px solid var(--rule);
+  flex-wrap:wrap;
+  gap:8px 24px;
+}
+.site-name{
+  font-size:18px;
+  font-weight:700;
+  color:var(--heading);
+  letter-spacing:-0.01em;
+}
+.site-phone{
+  font-size:15px;
+  color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+.site-phone a{color:var(--muted)}
+.site-phone a:hover{color:var(--accent)}
+
+/* ---- sections ---- */
+section{
+  padding:48px 0;
+  border-bottom:1px solid var(--rule);
+}
+section:last-of-type{border-bottom:none}
+
+h1{
+  font-size:28px;
+  line-height:1.25;
+  font-weight:700;
+  color:var(--heading);
+  letter-spacing:-0.02em;
+  text-wrap:balance;
+  max-width:580px;
+}
+
+.lede{
+  margin-top:20px;
+  font-size:18px;
+  line-height:1.55;
+  color:var(--muted);
+  max-width:560px;
+}
+
+h2{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:28px;
+}
+
+/* ---- service items ---- */
+.services{
+  display:flex;
+  flex-direction:column;
+  gap:32px;
+}
+.service h3{
+  font-size:18px;
+  font-weight:600;
+  color:var(--heading);
+  margin-bottom:6px;
+}
+.service p{
+  color:var(--text);
+  max-width:580px;
+}
+.service .tag{
+  display:inline-block;
+  font-size:13px;
+  font-weight:500;
+  color:var(--accent);
+  margin-top:8px;
+}
+
+/* ---- demo ---- */
+.demo-link{
+  display:block;
+  padding:24px;
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  margin-top:16px;
+  transition:border-color 0.15s;
+}
+.demo-link:hover{border-color:var(--accent)}
+.demo-link .label{
+  font-size:15px;
+  font-weight:600;
+  color:var(--heading);
+}
+.demo-link .url{
+  font-size:14px;
+  color:var(--muted);
+  margin-top:4px;
+  font-family:"SF Mono",SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+  word-break:break-all;
+}
+
+/* ---- contact ---- */
+.contact-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 40px;
+}
+.contact-item{
+  font-size:16px;
+}
+.contact-item .contact-label{
+  font-size:13px;
+  font-weight:500;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.03em;
+  display:block;
+  margin-bottom:2px;
+}
+
+/* ---- footer ---- */
+footer{
+  padding:32px 0;
+  font-size:14px;
+  color:var(--muted);
+}
+
+@media(max-width:500px){
+  html{font-size:16px}
+  h1{font-size:24px}
+  section{padding:36px 0}
+  .site-header{padding:24px 0 20px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-name">Buckland Analytics</div>
+  <div class="site-phone"><a href="tel:+447915585402">07915 585402</a></div>
+</header>
+
+<section>
+  <h1>We rank where to invest so you spend in the places that need it most</h1>
+  <p class="lede">Spatial analysis for housing associations, retrofit delivery bodies, and planning consultancies. You tell us your area. We tell you which neighbourhoods to prioritise and why.</p>
+</section>
+
+<section>
+  <h2>What you get</h2>
+  <div class="services">
+
+    <div class="service">
+      <h3>Retrofit targeting</h3>
+      <p>A ranked list of your top priority neighbourhoods for Warm Homes: Local Grant delivery. Which LSOAs have the most D&ndash;G rated homes, the highest fuel poverty, and the least retrofit activity. Covers your entire delivery area.</p>
+      <span class="tag">Free first area</span>
+    </div>
+
+    <div class="service">
+      <h3>Housing land supply assessment</h3>
+      <p>A one-page breakdown of a council&rsquo;s claimed five-year supply against actual delivery rates by site type. Which categories are under-delivering, where the gap is, and what the real number looks like.</p>
+      <span class="tag">Free first council</span>
+    </div>
+
+    <div class="service">
+      <h3>Site selection</h3>
+      <p>Ranked candidate locations for your next site, scored on catchment demand, competition, and cannibalisation of your existing branches. Built for multi-site healthcare operators making six-figure lease decisions.</p>
+      <span class="tag">Free diagnostic on your existing estate</span>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>Live demo</h2>
+  <p>A neighbourhood-level targeting dashboard built for WH:LG delivery bodies. EPC, fuel poverty, and deprivation data ranked at LSOA level across Liverpool City Region.</p>
+  <a class="demo-link" href="https://temporary-quick-juniper-v8f39bh.vercel.app" target="_blank" rel="noopener">
+    <div class="label">WH:LG Spatial Targeting Dashboard</div>
+    <div class="url">temporary-quick-juniper-v8f39bh.vercel.app</div>
+  </a>
+</section>
+
+<section>
+  <h2>About</h2>
+  <p>Buckland Analytics is a spatial analysis consultancy based in Manchester. We build neighbourhood-level models covering all 6,800+ English MSOAs, combining EPC, Census, IMD, and fuel poverty data to produce ranked investment priorities that hold up to scrutiny.</p>
+  <p style="margin-top:12px">Our work is currently under peer review. We also build live dashboards and evaluation frameworks for place-based programmes.</p>
+</section>
+
+<section>
+  <h2>Contact</h2>
+  <div class="contact-grid">
+    <div class="contact-item">
+      <span class="contact-label">Phone</span>
+      <a href="tel:+447915585402">07915 585402</a>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">Email</span>
+      <a href="mailto:jules@bucklandanalytics.co.uk">jules@bucklandanalytics.co.uk</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 Buckland Analytics
+</footer>
+
+</body>
+</html>
