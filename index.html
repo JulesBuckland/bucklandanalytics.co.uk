@@ -74,12 +74,12 @@ img{max-width:100%}
 .tabs button.active{background:#1e293b;border-color:#475569;color:#f1f5f9}
 
 .map-wrap{position:relative;width:100%;max-width:1080px;margin:0 auto;padding:0 24px}
-.map-container{position:relative;width:100%;height:520px;cursor:crosshair}
+.map-container{position:relative;width:100%;height:600px;cursor:crosshair}
 #map{display:block;width:100%;height:100%}
 .tooltip{position:absolute;background:rgba(15,23,42,.95);border:1px solid rgba(255,255,255,.1);
   border-radius:8px;padding:12px 16px;color:#e2e8f0;font-size:13px;line-height:1.5;
   pointer-events:none;opacity:0;transition:opacity .12s;max-width:230px;z-index:10;
-  font-family:var(--sans)}
+  font-family:var(--sans);backdrop-filter:blur(8px)}
 .tooltip.show{opacity:1}
 .tooltip-name{font-weight:600;font-size:14px;color:#f1f5f9;margin-bottom:2px}
 .tooltip-rank{font-family:var(--mono);font-size:12px;margin-bottom:8px;color:#94a3b8}
@@ -92,7 +92,7 @@ img{max-width:100%}
 .legend{display:flex;align-items:center;justify-content:center;gap:10px;
   margin-top:20px;font-size:12px;color:#64748b}
 .legend-bar{width:160px;height:8px;border-radius:4px;
-  background:linear-gradient(90deg,#334155,#3b82f6,#06b6d4,#22c55e,#facc15,#ef4444)}
+  background:linear-gradient(90deg,#1a2340,#2563eb,#06b6d4,#22c55e,#eab308,#ef4444)}
 
 .demo-stats{display:flex;justify-content:center;gap:48px;margin-top:28px;flex-wrap:wrap}
 .demo-stat{text-align:center}
@@ -105,12 +105,16 @@ img{max-width:100%}
 .apps>div>p{margin-top:12px;font-size:17px;max-width:560px;color:var(--muted)}
 .app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
 .app-card{padding:28px;border:1px solid var(--rule);border-radius:8px;
-  background:var(--card);transition:border-color .2s}
-.app-card:hover{border-color:var(--accent)}
+  background:var(--card);transition:border-color .2s,box-shadow .2s;cursor:pointer}
+.app-card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(5,150,105,.08)}
 .app-card h3{font:400 22px/1.2 var(--serif);color:var(--heading)}
 .app-card .result{font-weight:500;color:var(--accent);font-size:14px;
   margin:8px 0 12px;text-transform:uppercase;letter-spacing:.04em}
 .app-card p{font-size:15px;color:var(--text);line-height:1.55}
+.app-card .card-explore{display:inline-flex;align-items:center;gap:5px;
+  margin-top:16px;font-size:14px;font-weight:500;color:var(--accent);
+  transition:gap .2s}
+.app-card:hover .card-explore{gap:8px}
 
 /* --- Process --- */
 .process{padding:64px 0 80px;border-top:1px solid var(--rule)}
@@ -145,7 +149,7 @@ img{max-width:100%}
   .hero h1{font-size:32px}
   .hero .sub{font-size:16px}
   .demo-head h2{font-size:24px}
-  .map-container{height:400px}
+  .map-container{height:440px}
   .demo-stats{gap:24px}
   .demo-stat .num{font-size:22px}
   .apps h2{font-size:28px}
@@ -186,7 +190,7 @@ img{max-width:100%}
 <section class="demo" id="demo">
   <div class="demo-head">
     <h2>Explore 6,800+ English neighbourhoods</h2>
-    <p>Each dot is a neighbourhood. Colour shows priority. Hover to inspect.</p>
+    <p>Neighbourhood-level scoring across England. Hover any cell to inspect.</p>
   </div>
   <div class="tabs">
     <button class="active" data-mode="retrofit">Retrofit targeting</button>
@@ -216,20 +220,23 @@ img{max-width:100%}
     <h2>One ranking model. Three applications.</h2>
     <p>Every project uses the same neighbourhood-level model. You tell us the question &mdash; we tell you where.</p>
     <div class="app-grid">
-      <div class="app-card">
+      <div class="app-card" data-app="retrofit">
         <div class="result">What you get</div>
         <h3>Which neighbourhoods to retrofit first</h3>
         <p>For local authorities and retrofit installers targeting WH:LG and ECO funding. Ranked by fuel poverty, housing age, EPC ratings and vulnerability &mdash; so you spend your budget where it counts.</p>
+        <span class="card-explore">Explore in map &#8595;</span>
       </div>
-      <div class="app-card">
+      <div class="app-card" data-app="housing">
         <div class="result">What you get</div>
         <h3>Where the housing need is strongest</h3>
         <p>For planning consultancies and developers building Five Year Housing Land Supply evidence. Every area scored on affordability, development pressure and unmet need.</p>
+        <span class="card-explore">Explore in map &#8595;</span>
       </div>
-      <div class="app-card">
+      <div class="app-card" data-app="site">
         <div class="result">What you get</div>
         <h3>Which locations will perform best</h3>
         <p>For operators choosing where to open, expand or consolidate. Catchments ranked by population, accessibility, competition density and growth trends.</p>
+        <span class="card-explore">Explore in map &#8595;</span>
       </div>
     </div>
   </div>
@@ -273,12 +280,10 @@ img{max-width:100%}
 
 <script>
 (function(){
-  // --- Seeded PRNG (Mulberry32) ---
   function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;
     var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
     return((t^t>>>14)>>>0)/4294967296}}
 
-  // --- England boundary test ---
   function inEngland(lat,lon){
     if(lat<49.95||lat>55.8||lon<-5.8||lon>1.8)return false;
     var w;
@@ -309,7 +314,6 @@ img{max-width:100%}
     return true;
   }
 
-  // --- City centres ---
   var CITIES=[
     [51.509,-0.118,1100,"London"],[52.489,-1.898,340,"Birmingham"],
     [53.483,-2.244,300,"Manchester"],[53.801,-1.549,230,"Leeds"],
@@ -341,99 +345,139 @@ img{max-width:100%}
     [51.620,-0.300,30,"Barnet"],[51.340,-0.740,25,"Woking"]
   ];
 
-  // --- Generate 6800 points ---
-  function generatePoints(){
-    var rng=mulberry32(42);
-    var pts=[];
-    var attempts=0;
-    while(pts.length<6800&&attempts<500000){
-      attempts++;
-      var lat=49.95+rng()*5.85;
-      var lon=-5.7+rng()*7.5;
-      if(!inEngland(lat,lon))continue;
-
-      var maxW=0,near="Rural";
-      for(var i=0;i<CITIES.length;i++){
-        var c=CITIES[i];
-        var dlat=lat-c[0],dlon=lon-c[1];
-        var d2=dlat*dlat+dlon*dlon;
-        var r2=c[2]*0.000003;
-        var w=c[2]*Math.exp(-d2/(2*r2));
-        if(w>maxW){maxW=w;near=c[3]}
-      }
-      var accept=0.04+0.96*Math.min(1,maxW/80);
-      if(rng()<accept){
-        var latN=(lat-49.95)/5.85;
-        var londonD=Math.sqrt((lat-51.509)*(lat-51.509)+(lon+0.118)*(lon+0.118));
-        var urban=Math.min(1,maxW/120);
-        pts.push({
-          lat:lat,lon:lon,name:near,
-          retrofit:clamp(0.45*latN+0.35*urban+0.20*rng()),
-          housing:clamp(0.55*Math.max(0,1-londonD/3)+0.28*urban+0.17*rng()),
-          site:clamp(0.65*urban*urban+0.10*(0.5+0.5*Math.sin(lat*3))+0.25*rng())
-        });
-      }
-    }
-    // Percentile-normalize each score so all colors are used
-    ['retrofit','housing','site'].forEach(function(key){
-      var idx=[];
-      for(var i=0;i<pts.length;i++)idx.push(i);
-      idx.sort(function(a,b){return pts[a][key]-pts[b][key]});
-      for(var i=0;i<idx.length;i++)pts[idx[i]][key+'N']=i/(idx.length-1);
-    });
-    pts.sort(function(a,b){return a.lat-b.lat});
-    return pts;
-  }
   function clamp(v){return v<0?0:v>1?1:v}
 
-  // --- Color scale ---
   function scoreToColor(score){
     var stops=[
-      {t:0,r:30,g:41,b:59,a:.25},
-      {t:.18,r:59,g:130,b:246,a:.5},
-      {t:.35,r:6,g:182,b:212,a:.65},
-      {t:.5,r:34,g:197,b:94,a:.75},
-      {t:.7,r:250,g:204,b:21,a:.9},
-      {t:1,r:239,g:68,b:68,a:1}
+      {t:0,   r:22,g:32,b:62},
+      {t:.12, r:37,g:60,b:160},
+      {t:.25, r:59,g:130,b:246},
+      {t:.40, r:6,g:182,b:212},
+      {t:.55, r:34,g:197,b:94},
+      {t:.70, r:132,g:204,b:22},
+      {t:.82, r:234,g:179,b:8},
+      {t:.92, r:249,g:115,b:22},
+      {t:1,   r:239,g:68,b:68}
     ];
     var a=stops[0],b=stops[stops.length-1];
     for(var i=0;i<stops.length-1;i++){
       if(score>=stops[i].t&&score<=stops[i+1].t){a=stops[i];b=stops[i+1];break}
     }
     var f=b.t===a.t?0:(score-a.t)/(b.t-a.t);
-    return'rgba('+Math.round(a.r+(b.r-a.r)*f)+','+
+    return'rgb('+Math.round(a.r+(b.r-a.r)*f)+','+
       Math.round(a.g+(b.g-a.g)*f)+','+
-      Math.round(a.b+(b.b-a.b)*f)+','+
-      (a.a+(b.a-a.a)*f).toFixed(2)+')';
+      Math.round(a.b+(b.b-a.b)*f)+')';
   }
 
   // --- State ---
   var canvas=document.getElementById('map');
   var ctx=canvas.getContext('2d');
   var tipEl=document.getElementById('tooltip');
-  var points=generatePoints();
   var mode='retrofit';
-  var hovered=null;
+  var hoveredHex=null;
   var offscreen=null;
   var dpr=window.devicePixelRatio||1;
   var W,H;
+  var hexes=[];
+  var hexMap={};
+  var hexSize,drawSize,colSpacing,rowSpacing;
 
   // --- Projection ---
   var LAT_MIN=49.8,LAT_MAX=56.0,LON_MIN=-6.0,LON_MAX=2.0;
   var LON_CORR=0.62;
-  var padX,padY,scaleY,scaleX,engW;
+  var padX,engW;
 
   function calcProjection(){
-    scaleY=H/(LAT_MAX-LAT_MIN);
+    var scaleY=H/(LAT_MAX-LAT_MIN);
     engW=(LON_MAX-LON_MIN)*scaleY*LON_CORR;
     padX=(W-engW)/2;
-    padY=0;
   }
 
   function project(lat,lon){
     var x=padX+((lon-LON_MIN)/(LON_MAX-LON_MIN))*engW;
-    var y=padY+((LAT_MAX-lat)/(LAT_MAX-LAT_MIN))*H;
+    var y=((LAT_MAX-lat)/(LAT_MAX-LAT_MIN))*H;
     return[x,y];
+  }
+
+  function unproject(x,y){
+    var lon=LON_MIN+((x-padX)/engW)*(LON_MAX-LON_MIN);
+    var lat=LAT_MAX-(y/H)*(LAT_MAX-LAT_MIN);
+    return[lat,lon];
+  }
+
+  // --- Hex path (flat-top) ---
+  function drawHexPath(c,cx,cy,s){
+    c.beginPath();
+    for(var i=0;i<6;i++){
+      var ang=Math.PI/3*i;
+      var vx=cx+s*Math.cos(ang);
+      var vy=cy+s*Math.sin(ang);
+      if(i===0)c.moveTo(vx,vy);else c.lineTo(vx,vy);
+    }
+    c.closePath();
+  }
+
+  // --- Build hex grid ---
+  function buildHexGrid(){
+    hexSize=Math.max(4,Math.min(9,H/68));
+    drawSize=hexSize*0.90;
+    colSpacing=hexSize*1.5;
+    rowSpacing=Math.sqrt(3)*hexSize;
+
+    hexes=[];
+    hexMap={};
+
+    var maxCol=Math.ceil(W/colSpacing)+1;
+    var maxRow=Math.ceil(H/rowSpacing)+1;
+
+    for(var col=-1;col<=maxCol;col++){
+      for(var row=-1;row<=maxRow;row++){
+        var cx=col*colSpacing;
+        var cy=row*rowSpacing+(col&1?rowSpacing/2:0);
+
+        var ll=unproject(cx,cy);
+        var lat=ll[0],lon=ll[1];
+        if(!inEngland(lat,lon))continue;
+
+        var seed=Math.round((lat+90)*200)*100000+Math.round((lon+180)*200);
+        var rng=mulberry32(seed);
+        var n1=rng(),n2=rng(),n3=rng();
+
+        var maxW=0,near='Rural';
+        for(var i=0;i<CITIES.length;i++){
+          var c=CITIES[i];
+          var dlat=lat-c[0],dlon=lon-c[1];
+          var d2=dlat*dlat+dlon*dlon;
+          var r2=c[2]*0.000003;
+          var w=c[2]*Math.exp(-d2/(2*r2));
+          if(w>maxW){maxW=w;near=c[3]}
+        }
+
+        var latN=(lat-49.95)/5.85;
+        var londonD=Math.sqrt((lat-51.509)*(lat-51.509)+(lon+0.118)*(lon+0.118));
+        var urban=Math.min(1,maxW/120);
+
+        var key=col+','+row;
+        var h={
+          cx:cx,cy:cy,lat:lat,lon:lon,
+          col:col,row:row,key:key,
+          name:near,urban:urban,
+          retrofit:clamp(0.45*latN+0.35*urban+0.20*n1),
+          housing:clamp(0.55*Math.max(0,1-londonD/3)+0.28*urban+0.17*n2),
+          site:clamp(0.65*urban*urban+0.10*(0.5+0.5*Math.sin(lat*3))+0.25*n3)
+        };
+        hexes.push(h);
+        hexMap[key]=h;
+      }
+    }
+
+    // Percentile normalise each score
+    ['retrofit','housing','site'].forEach(function(k){
+      var sorted=hexes.slice().sort(function(a,b){return a[k]-b[k]});
+      for(var i=0;i<sorted.length;i++){
+        sorted[i][k+'N']=i/Math.max(1,sorted.length-1);
+      }
+    });
   }
 
   // --- Sizing ---
@@ -444,79 +488,102 @@ img{max-width:100%}
     canvas.style.width=W+'px';canvas.style.height=H+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
     calcProjection();
+    buildHexGrid();
     drawOffscreen();
     compositeFrame();
   }
 
-  // --- Draw offscreen buffer ---
+  // --- Offscreen buffer ---
   function drawOffscreen(){
     offscreen=document.createElement('canvas');
     offscreen.width=canvas.width;offscreen.height=canvas.height;
     var oc=offscreen.getContext('2d');
     oc.setTransform(dpr,0,0,dpr,0,0);
-    var r=Math.max(2,Math.min(3.5,W/320));
-    for(var i=0;i<points.length;i++){
-      var p=points[i];
-      var xy=project(p.lat,p.lon);
-      oc.beginPath();
-      oc.arc(xy[0],xy[1],r,0,6.283);
-      oc.fillStyle=scoreToColor(p[mode+'N']);
+
+    // Glow pass for high-priority hexes
+    for(var i=0;i<hexes.length;i++){
+      var h=hexes[i];
+      var score=h[mode+'N'];
+      if(score>0.72){
+        var glow=(score-0.72)/0.28;
+        drawHexPath(oc,h.cx,h.cy,drawSize*1.6);
+        oc.fillStyle='rgba(239,68,68,'+(glow*0.12).toFixed(3)+')';
+        oc.fill();
+      }
+    }
+
+    // Main hex pass
+    for(var i=0;i<hexes.length;i++){
+      var h=hexes[i];
+      drawHexPath(oc,h.cx,h.cy,drawSize);
+      oc.fillStyle=scoreToColor(h[mode+'N']);
       oc.fill();
     }
   }
 
-  // --- Composite final frame ---
+  // --- Composite ---
   function compositeFrame(){
     ctx.clearRect(0,0,W,H);
     if(offscreen)ctx.drawImage(offscreen,0,0,canvas.width,canvas.height,0,0,W,H);
-    if(hovered){
-      var xy=project(hovered.lat,hovered.lon);
-      var r=Math.max(3,Math.min(5,W/240));
-      ctx.beginPath();ctx.arc(xy[0],xy[1],r+4,0,6.283);
-      ctx.fillStyle='rgba(255,255,255,.15)';ctx.fill();
-      ctx.beginPath();ctx.arc(xy[0],xy[1],r+1,0,6.283);
-      ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
-      ctx.beginPath();ctx.arc(xy[0],xy[1],r,0,6.283);
-      ctx.fillStyle=scoreToColor(hovered[mode+'N']);ctx.fill();
+    if(hoveredHex){
+      // Bright fill
+      drawHexPath(ctx,hoveredHex.cx,hoveredHex.cy,drawSize);
+      ctx.fillStyle=scoreToColor(hoveredHex[mode+'N']);
+      ctx.fill();
+      // White border
+      drawHexPath(ctx,hoveredHex.cx,hoveredHex.cy,drawSize+1);
+      ctx.strokeStyle='rgba(255,255,255,0.85)';
+      ctx.lineWidth=2;
+      ctx.stroke();
     }
   }
 
-  // --- Find nearest point ---
-  function findNearest(mx,my){
+  // --- Hex lookup ---
+  function getHexAtPixel(px,py){
+    var approxCol=Math.round(px/colSpacing);
+    var offset=(approxCol&1)?rowSpacing/2:0;
+    var approxRow=Math.round((py-offset)/rowSpacing);
+
     var best=null,bestD=Infinity;
-    var threshold=Math.max(8,W/80);
-    for(var i=0;i<points.length;i++){
-      var xy=project(points[i].lat,points[i].lon);
-      var dx=xy[0]-mx,dy=xy[1]-my;
-      var d=dx*dx+dy*dy;
-      if(d<bestD){bestD=d;best=points[i]}
+    for(var dc=-1;dc<=1;dc++){
+      for(var dr=-1;dr<=1;dr++){
+        var c=approxCol+dc,r=approxRow+dr;
+        var h=hexMap[c+','+r];
+        if(!h)continue;
+        var dx=px-h.cx,dy=py-h.cy;
+        var d=dx*dx+dy*dy;
+        if(d<bestD){bestD=d;best=h}
+      }
     }
-    return bestD<threshold*threshold?best:null;
+    return(best&&bestD<hexSize*hexSize*1.3)?best:null;
   }
 
-  // --- Tooltip content ---
-  function buildTooltip(p){
-    var rng=mulberry32(Math.round(p.lat*1e4)^Math.round(p.lon*1e4));
-    var score=p[mode];
-    var rank=Math.max(1,Math.round((1-score)*6800));
-    var html='<div class="tooltip-name">'+p.name+'</div>';
-    html+='<div class="tooltip-rank">Rank '+rank.toLocaleString()+' / 6,800</div>';
+  // --- Tooltip ---
+  function buildTooltip(h){
+    var score=h[mode+'N'];
+    var totalH=hexes.length;
+    var rank=Math.max(1,Math.round((1-score)*totalH));
+    var hoods=Math.round(4+h.urban*9);
 
+    var html='<div class="tooltip-name">'+h.name+'</div>';
+    html+='<div class="tooltip-rank">Rank '+rank.toLocaleString()+' / '+totalH.toLocaleString()+' cells &middot; ~'+hoods+' areas</div>';
+
+    var s=h[mode];
     if(mode==='retrofit'){
-      html+=row('Fuel poverty',(8+score*28).toFixed(1)+'%');
-      html+=row('Avg EPC band',['C','C','D','D','E'][Math.floor(rng()*5)]);
-      html+=row('Retrofit est.','&pound;'+(0.4+score*3.8).toFixed(1)+'M');
-      html+=row('Vulnerability',(2+score*7.5).toFixed(1)+' / 10');
+      html+=row('Fuel poverty',(8+s*28).toFixed(1)+'%');
+      html+=row('Avg EPC band',s>0.7?'E':s>0.4?'D':'C');
+      html+=row('Retrofit est.','&pound;'+(0.4+s*3.8).toFixed(1)+'M');
+      html+=row('Vulnerability',(2+s*7.5).toFixed(1)+' / 10');
     }else if(mode==='housing'){
-      html+=row('5YHLS deficit',(0.5+score*4.2).toFixed(1)+' yrs');
-      html+=row('Affordability',(4+score*12).toFixed(1)+'x');
-      html+=row('Dev. pressure',score>0.7?'High':score>0.4?'Medium':'Low');
-      html+=row('Unmet need',(50+score*400).toFixed(0)+' /yr');
+      html+=row('5YHLS deficit',(0.5+s*4.2).toFixed(1)+' yrs');
+      html+=row('Affordability',(4+s*12).toFixed(1)+'x');
+      html+=row('Dev. pressure',s>0.7?'High':s>0.4?'Medium':'Low');
+      html+=row('Unmet need',(50+s*400).toFixed(0)+' /yr');
     }else{
-      html+=row('Catchment 15m',(5+score*55).toFixed(0)+',000');
-      html+=row('Competitor dens.',(0.5+rng()*4).toFixed(1));
-      html+=row('Growth trend','+'+(0.5+score*6).toFixed(1)+'%');
-      html+=row('Access index',(3+score*6.5).toFixed(1)+' / 10');
+      html+=row('Catchment 15m',(5+s*55).toFixed(0)+',000');
+      html+=row('Growth trend','+'+(0.5+s*6).toFixed(1)+'%');
+      html+=row('Access index',(3+s*6.5).toFixed(1)+' / 10');
+      html+=row('Competition',s>0.6?'Low':s>0.3?'Medium':'High');
     }
     return html;
   }
@@ -524,20 +591,21 @@ img{max-width:100%}
     return'<div class="tooltip-row"><span class="tooltip-label">'+label+'</span><span class="tooltip-val">'+val+'</span></div>';
   }
 
-  // --- Mouse/touch handlers ---
+  // --- Hover handler ---
   function handlePointer(mx,my,clientX,clientY){
-    var p=findNearest(mx,my);
-    if(p!==hovered){
-      hovered=p;
+    if(transitioning)return;
+    var h=getHexAtPixel(mx,my);
+    if(h!==hoveredHex){
+      hoveredHex=h;
       compositeFrame();
-      if(p){
-        tipEl.innerHTML=buildTooltip(p);
+      if(h){
+        tipEl.innerHTML=buildTooltip(h);
         tipEl.classList.add('show');
       }else{
         tipEl.classList.remove('show');
       }
     }
-    if(p){
+    if(h){
       var rect=canvas.getBoundingClientRect();
       var tx=clientX-rect.left+14;
       var ty=clientY-rect.top-10;
@@ -553,7 +621,7 @@ img{max-width:100%}
     handlePointer(e.clientX-rect.left,e.clientY-rect.top,e.clientX,e.clientY);
   });
   canvas.addEventListener('mouseleave',function(){
-    hovered=null;compositeFrame();tipEl.classList.remove('show');
+    hoveredHex=null;compositeFrame();tipEl.classList.remove('show');
   });
   canvas.addEventListener('touchstart',function(e){
     e.preventDefault();
@@ -566,18 +634,77 @@ img{max-width:100%}
     handlePointer(t.clientX-rect.left,t.clientY-rect.top,t.clientX,t.clientY);
   },{passive:false});
   canvas.addEventListener('touchend',function(){
-    hovered=null;compositeFrame();tipEl.classList.remove('show');
+    hoveredHex=null;compositeFrame();tipEl.classList.remove('show');
   });
 
-  // --- Tab switching ---
+  // --- Tab transitions ---
+  var transitioning=false;
+  var transitionFrom={};
+  var transitionStart=0;
+  var TRANS_DUR=650;
+
+  function switchTab(newMode){
+    if(newMode===mode||transitioning)return;
+    for(var i=0;i<hexes.length;i++){
+      transitionFrom[hexes[i].key]=hexes[i][mode+'N'];
+    }
+    mode=newMode;
+    hoveredHex=null;tipEl.classList.remove('show');
+    transitionStart=performance.now();
+    transitioning=true;
+    requestAnimationFrame(animateTransition);
+  }
+
+  function animateTransition(now){
+    var t=Math.min(1,(now-transitionStart)/TRANS_DUR);
+    var ease=t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<hexes.length;i++){
+      var h=hexes[i];
+      var from=transitionFrom[h.key]||0;
+      var to=h[mode+'N'];
+      var s=from+(to-from)*ease;
+      drawHexPath(ctx,h.cx,h.cy,drawSize);
+      ctx.fillStyle=scoreToColor(s);
+      ctx.fill();
+    }
+    if(t<1){
+      requestAnimationFrame(animateTransition);
+    }else{
+      transitioning=false;
+      drawOffscreen();
+      compositeFrame();
+    }
+  }
+
+  // --- Tab buttons ---
   var tabBtns=document.querySelectorAll('.tabs button');
   for(var i=0;i<tabBtns.length;i++){
     tabBtns[i].addEventListener('click',function(){
+      var newMode=this.getAttribute('data-mode');
       for(var j=0;j<tabBtns.length;j++)tabBtns[j].classList.remove('active');
       this.classList.add('active');
-      mode=this.getAttribute('data-mode');
-      hovered=null;tipEl.classList.remove('show');
-      drawOffscreen();compositeFrame();
+      switchTab(newMode);
+    });
+  }
+
+  // --- App card clicks ---
+  var appCards=document.querySelectorAll('.app-card');
+  for(var i=0;i<appCards.length;i++){
+    appCards[i].addEventListener('click',function(){
+      var appMode=this.getAttribute('data-app');
+      document.getElementById('demo').scrollIntoView({behavior:'smooth'});
+      setTimeout(function(){
+        for(var j=0;j<tabBtns.length;j++){
+          if(tabBtns[j].getAttribute('data-mode')===appMode){
+            tabBtns[j].classList.add('active');
+          }else{
+            tabBtns[j].classList.remove('active');
+          }
+        }
+        switchTab(appMode);
+      },400);
     });
   }
 
@@ -585,21 +712,25 @@ img{max-width:100%}
   var animated=false;
   function animateEntrance(){
     if(animated)return;animated=true;
-    var start=performance.now(),dur=1800;
-    var r=Math.max(2,Math.min(3.5,W/320));
+    var start=performance.now(),dur=2200;
+
     function frame(now){
       var t=Math.min(1,(now-start)/dur);
       var ease=1-Math.pow(1-t,3);
+
       ctx.clearRect(0,0,W,H);
-      for(var i=0;i<points.length;i++){
-        var p=points[i];
-        var latN=(p.lat-49.95)/5.85;
-        var pT=Math.max(0,Math.min(1,(ease-latN*0.4)/0.6));
-        if(pT<=0)continue;
-        var xy=project(p.lat,p.lon);
-        ctx.globalAlpha=pT;
-        ctx.beginPath();ctx.arc(xy[0],xy[1],r,0,6.283);
-        ctx.fillStyle=scoreToColor(p[mode+'N']);ctx.fill();
+      for(var i=0;i<hexes.length;i++){
+        var h=hexes[i];
+        var yN=h.cy/H;
+        var delay=(1-yN)*0.5;
+        var localT=Math.max(0,Math.min(1,(ease-delay)/0.5));
+        if(localT<=0)continue;
+
+        var scale=0.3+0.7*localT;
+        ctx.globalAlpha=localT;
+        drawHexPath(ctx,h.cx,h.cy,drawSize*scale);
+        ctx.fillStyle=scoreToColor(h[mode+'N']);
+        ctx.fill();
       }
       ctx.globalAlpha=1;
       if(t<1)requestAnimationFrame(frame);
