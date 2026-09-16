@@ -4,200 +4,615 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Buckland Analytics</title>
-<meta name="description" content="Spatial analysis that ranks where to invest. Neighbourhood-level data for retrofit, housing and site selection across England.">
+<meta name="description" content="We rank where to invest, down to the neighbourhood. Free neighbourhood rankings for retrofit, housing and site selection across England.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0}
 :root{
-  --bg:#f7f6f3;--text:#2c2c2c;--heading:#1a1a1a;
-  --accent:#267c6d;--accent-light:#e8f3f0;
-  --muted:#6b7076;--rule:#d8d6d1;--surface:#edecea;
-  --serif:"Source Serif 4",Georgia,serif;
-  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bg:#f5f4ef;--text:#1e293b;--heading:#0f172a;
+  --accent:#059669;--accent-hover:#047857;--accent-light:#d1fae5;
+  --muted:#64748b;--rule:#ddd9d0;--surface:#eae8e1;--card:#fff;
+  --serif:"Instrument Serif",Georgia,serif;
+  --sans:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono","Consolas",monospace;
 }
 @media(prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#1a1d20;--text:#c8c8c4;--heading:#e2e2de;
-    --accent:#3db89f;--accent-light:#1e2f2b;
-    --muted:#8a8f96;--rule:#33383e;--surface:#24282d;
+    --bg:#0f1419;--text:#94a3b8;--heading:#e2e8f0;
+    --accent:#34d399;--accent-hover:#6ee7b7;--accent-light:#064e3b;
+    --muted:#64748b;--rule:#1e293b;--surface:#1a2332;--card:#1e293b;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#1a1d20;--text:#c8c8c4;--heading:#e2e2de;
-  --accent:#3db89f;--accent-light:#1e2f2b;
-  --muted:#8a8f96;--rule:#33383e;--surface:#24282d;
+  --bg:#0f1419;--text:#94a3b8;--heading:#e2e8f0;
+  --accent:#34d399;--accent-hover:#6ee7b7;--accent-light:#064e3b;
+  --muted:#64748b;--rule:#1e293b;--surface:#1a2332;--card:#1e293b;
 }
-html{font:16px/1.5 var(--sans);color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
-body{min-height:100dvh;display:flex;flex-direction:column;padding:0 24px}
+
+html{font:17px/1.6 var(--sans);color:var(--text);background:var(--bg);
+  -webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{background:var(--bg);padding:0}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
+img{max-width:100%}
 
-/* --- top bar --- */
-.top{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:20px 0;border-bottom:1px solid var(--rule);
-  flex-wrap:wrap;gap:8px 20px;
-  max-width:1080px;width:100%;margin:0 auto;
-}
-.logo{font:600 18px/1 var(--serif);color:var(--heading);white-space:nowrap}
-.top-contact{display:flex;gap:20px;font-size:14px;font-weight:500}
-.top-contact a{color:var(--heading)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 
-/* --- main --- */
-.main{
-  flex:1;display:flex;align-items:center;
-  max-width:1080px;width:100%;margin:0 auto;
-  gap:48px;padding:40px 0;
-}
-.left{flex:1;min-width:280px}
-.right{flex:1;min-width:280px;max-width:480px}
+/* --- Nav --- */
+.nav{border-bottom:1px solid var(--rule)}
+.nav .wrap{display:flex;justify-content:space-between;align-items:center;
+  padding-top:18px;padding-bottom:18px;flex-wrap:wrap;gap:6px 20px}
+.logo{font:400 22px/1 var(--serif);color:var(--heading);white-space:nowrap}
+.nav-links{display:flex;gap:20px;font-size:14px;font-weight:500}
+.nav-links a{color:var(--heading)}
 
-h1{
-  font:600 32px/1.2 var(--serif);color:var(--heading);
-  letter-spacing:-0.01em;text-wrap:balance;
-}
-.sub{margin-top:14px;font-size:17px;color:var(--text);max-width:420px}
+/* --- Hero --- */
+.hero{padding:72px 0 64px}
+.hero-inner{max-width:620px}
+.hero h1{font:400 46px/1.12 var(--serif);color:var(--heading);
+  letter-spacing:-0.01em;text-wrap:balance}
+.hero .sub{margin-top:20px;font-size:18px;max-width:540px;color:var(--text)}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;margin-top:28px;
+  padding:14px 28px;background:var(--accent);color:#fff;font-weight:600;
+  font-size:15px;border-radius:6px;text-decoration:none;transition:background .2s}
+.hero-cta:hover{background:var(--accent-hover);text-decoration:none}
+.hero-proof{margin-top:32px;font-size:14px;color:var(--muted);display:flex;gap:24px;flex-wrap:wrap}
+.hero-proof span{white-space:nowrap}
 
-/* --- ribbon --- */
-.ribbon{
-  display:flex;gap:0;margin-top:28px;
-  border:1px solid var(--rule);border-radius:6px;overflow:hidden;
-  width:fit-content;
-}
-.ribbon a{
-  padding:10px 16px;font-size:13px;font-weight:600;
-  color:var(--muted);border-right:1px solid var(--rule);
-  white-space:nowrap;text-decoration:none;
-  transition:background 0.15s,color 0.15s;
-}
-.ribbon a:last-child{border-right:none}
-.ribbon a:hover{background:var(--accent-light);color:var(--accent)}
+/* --- Demo --- */
+.demo{background:#0c1421;padding:56px 0 48px;position:relative}
+.demo-head{text-align:center;margin-bottom:8px}
+.demo-head h2{font:400 32px/1.2 var(--serif);color:#e2e8f0}
+.demo-head p{color:#94a3b8;margin-top:6px;font-size:15px}
+.tabs{display:flex;justify-content:center;gap:4px;margin:20px 0 24px;flex-wrap:wrap}
+.tabs button{background:transparent;border:1px solid #334155;color:#94a3b8;
+  padding:9px 20px;font:500 14px/1 var(--sans);border-radius:5px;cursor:pointer;
+  transition:all .15s}
+.tabs button:hover{border-color:#475569;color:#cbd5e1}
+.tabs button.active{background:#1e293b;border-color:#475569;color:#f1f5f9}
 
-.cta{
-  margin-top:24px;font-size:15px;color:var(--muted);
-}
-.cta strong{color:var(--text);font-weight:500}
+.map-wrap{position:relative;width:100%;max-width:1080px;margin:0 auto;padding:0 24px}
+.map-container{position:relative;width:100%;height:520px;cursor:crosshair}
+#map{display:block;width:100%;height:100%}
+.tooltip{position:absolute;background:rgba(15,23,42,.95);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:12px 16px;color:#e2e8f0;font-size:13px;line-height:1.5;
+  pointer-events:none;opacity:0;transition:opacity .12s;max-width:230px;z-index:10;
+  font-family:var(--sans)}
+.tooltip.show{opacity:1}
+.tooltip-name{font-weight:600;font-size:14px;color:#f1f5f9;margin-bottom:2px}
+.tooltip-rank{font-family:var(--mono);font-size:12px;margin-bottom:8px;color:#94a3b8}
+.tooltip-row{display:flex;justify-content:space-between;gap:16px;font-size:12px;
+  padding:2px 0;border-top:1px solid rgba(255,255,255,.06)}
+.tooltip-row:first-of-type{border-top:none}
+.tooltip-label{color:#94a3b8}
+.tooltip-val{font-family:var(--mono);font-weight:500;color:#e2e8f0;text-align:right}
 
-/* --- map card --- */
-.map-card{
-  background:var(--surface);border:1px solid var(--rule);
-  border-radius:8px;overflow:hidden;
-  aspect-ratio:4/3;position:relative;
-}
-.map-card svg{width:100%;height:100%;display:block}
-.map-label{
-  position:absolute;bottom:12px;left:14px;
-  font-size:12px;font-weight:600;color:var(--muted);
-  background:var(--bg);padding:3px 8px;border-radius:3px;
-  border:1px solid var(--rule);
-}
+.legend{display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:20px;font-size:12px;color:#64748b}
+.legend-bar{width:160px;height:8px;border-radius:4px;
+  background:linear-gradient(90deg,#334155,#3b82f6,#06b6d4,#22c55e,#facc15,#ef4444)}
 
-/* --- footer --- */
-.foot{
-  max-width:1080px;width:100%;margin:0 auto;
-  padding:16px 0;font-size:13px;color:var(--muted);
-  border-top:1px solid var(--rule);
-}
+.demo-stats{display:flex;justify-content:center;gap:48px;margin-top:28px;flex-wrap:wrap}
+.demo-stat{text-align:center}
+.demo-stat .num{font:500 28px/1 var(--mono);color:#f1f5f9}
+.demo-stat .label{font-size:13px;color:#64748b;margin-top:4px}
 
-@media(max-width:720px){
-  .main{flex-direction:column;gap:32px;padding:28px 0}
-  .right{max-width:100%}
-  h1{font-size:26px}
-  .ribbon{flex-wrap:wrap;width:100%}
-  .ribbon a{flex:1;text-align:center;min-width:0;padding:8px 10px;font-size:12px}
+/* --- Applications --- */
+.apps{padding:80px 0}
+.apps h2{font:400 36px/1.15 var(--serif);color:var(--heading);text-wrap:balance}
+.apps>div>p{margin-top:12px;font-size:17px;max-width:560px;color:var(--muted)}
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.app-card{padding:28px;border:1px solid var(--rule);border-radius:8px;
+  background:var(--card);transition:border-color .2s}
+.app-card:hover{border-color:var(--accent)}
+.app-card h3{font:400 22px/1.2 var(--serif);color:var(--heading)}
+.app-card .result{font-weight:500;color:var(--accent);font-size:14px;
+  margin:8px 0 12px;text-transform:uppercase;letter-spacing:.04em}
+.app-card p{font-size:15px;color:var(--text);line-height:1.55}
+
+/* --- Process --- */
+.process{padding:64px 0 80px;border-top:1px solid var(--rule)}
+.process h2{font:400 32px/1.2 var(--serif);color:var(--heading)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:36px;
+  counter-reset:step}
+.step{counter-increment:step;position:relative;padding-left:0}
+.step::before{content:counter(step);font:500 13px/1 var(--mono);
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:50%;background:var(--accent-light);
+  color:var(--accent);margin-bottom:12px}
+.step h3{font:600 16px/1.3 var(--sans);color:var(--heading);margin-bottom:6px}
+.step p{font-size:15px;color:var(--muted)}
+
+/* --- CTA --- */
+.cta-band{background:var(--accent);padding:56px 0;text-align:center}
+.cta-band h2{font:400 34px/1.15 var(--serif);color:#fff}
+.cta-band p{color:rgba(255,255,255,.85);margin-top:10px;font-size:17px}
+.cta-contacts{display:flex;justify-content:center;gap:28px;margin-top:24px;flex-wrap:wrap}
+.cta-contacts a{color:#fff;font-weight:600;font-size:15px;
+  padding:12px 24px;border:2px solid rgba(255,255,255,.4);border-radius:6px;
+  transition:border-color .2s}
+.cta-contacts a:hover{border-color:#fff;text-decoration:none}
+
+/* --- Footer --- */
+.foot{padding:20px 0;font-size:13px;color:var(--muted);border-top:1px solid var(--rule)}
+.foot .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+
+/* --- Responsive --- */
+@media(max-width:768px){
+  .hero{padding:48px 0 40px}
+  .hero h1{font-size:32px}
+  .hero .sub{font-size:16px}
+  .demo-head h2{font-size:24px}
+  .map-container{height:400px}
+  .demo-stats{gap:24px}
+  .demo-stat .num{font-size:22px}
+  .apps h2{font-size:28px}
+  .app-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr;gap:24px}
+  .cta-band h2{font-size:26px}
+  .process h2{font-size:26px}
 }
 </style>
 </head>
 <body>
 
-<div class="top">
-  <div class="logo">Buckland Analytics</div>
-  <div class="top-contact">
+<nav class="nav">
+  <div class="wrap">
+    <div class="logo">Buckland Analytics</div>
+    <div class="nav-links">
+      <a href="tel:+447915585402">07915 585402</a>
+      <a href="mailto:jules@bucklandanalytics.co.uk">jules@bucklandanalytics.co.uk</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <h1>We rank where to invest, down to the neighbourhood.</h1>
+      <p class="sub">You tell us the area. We score every neighbourhood on your criteria &mdash; fuel poverty, housing need, catchment potential &mdash; and hand you a prioritised shortlist with the evidence to act on it.</p>
+      <a href="#demo" class="hero-cta">See the data &#8595;</a>
+      <div class="hero-proof">
+        <span>6,800+ areas across England</span>
+        <span>Results in 24 hours</span>
+        <span>First ranking free</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="demo" id="demo">
+  <div class="demo-head">
+    <h2>Explore 6,800+ English neighbourhoods</h2>
+    <p>Each dot is a neighbourhood. Colour shows priority. Hover to inspect.</p>
+  </div>
+  <div class="tabs">
+    <button class="active" data-mode="retrofit">Retrofit targeting</button>
+    <button data-mode="housing">Housing supply</button>
+    <button data-mode="site">Site selection</button>
+  </div>
+  <div class="map-wrap">
+    <div class="map-container">
+      <canvas id="map"></canvas>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+  <div class="legend">
+    <span>Low priority</span>
+    <div class="legend-bar"></div>
+    <span>High priority</span>
+  </div>
+  <div class="demo-stats">
+    <div class="demo-stat"><div class="num">6,800+</div><div class="label">Neighbourhoods ranked</div></div>
+    <div class="demo-stat"><div class="num">30+</div><div class="label">Data sources integrated</div></div>
+    <div class="demo-stat"><div class="num">24hr</div><div class="label">Turnaround time</div></div>
+  </div>
+</section>
+
+<section class="apps">
+  <div class="wrap">
+    <h2>One ranking model. Three applications.</h2>
+    <p>Every project uses the same neighbourhood-level model. You tell us the question &mdash; we tell you where.</p>
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="result">What you get</div>
+        <h3>Which neighbourhoods to retrofit first</h3>
+        <p>For local authorities and retrofit installers targeting WH:LG and ECO funding. Ranked by fuel poverty, housing age, EPC ratings and vulnerability &mdash; so you spend your budget where it counts.</p>
+      </div>
+      <div class="app-card">
+        <div class="result">What you get</div>
+        <h3>Where the housing need is strongest</h3>
+        <p>For planning consultancies and developers building Five Year Housing Land Supply evidence. Every area scored on affordability, development pressure and unmet need.</p>
+      </div>
+      <div class="app-card">
+        <div class="result">What you get</div>
+        <h3>Which locations will perform best</h3>
+        <p>For operators choosing where to open, expand or consolidate. Catchments ranked by population, accessibility, competition density and growth trends.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <h3>Name your area</h3>
+        <p>A region, local authority, or postcode area. Tell us what decision you are making.</p>
+      </div>
+      <div class="step">
+        <h3>We rank every neighbourhood</h3>
+        <p>Our model scores each area against 30+ data sources. Delivered within 24 hours.</p>
+      </div>
+      <div class="step">
+        <h3>You get a ranked shortlist</h3>
+        <p>Priority list, maps, scores and full methodology &mdash; ready for your board or funding bid.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <h2>Your first ranking is free.</h2>
+  <p>Name an area. We'll rank it in 24 hours. No strings.</p>
+  <div class="cta-contacts">
     <a href="tel:+447915585402">07915 585402</a>
     <a href="mailto:jules@bucklandanalytics.co.uk">jules@bucklandanalytics.co.uk</a>
   </div>
-</div>
+</section>
 
-<div class="main">
-  <div class="left">
-    <h1>We rank where to invest, down to the neighbourhood.</h1>
-    <p class="sub">Spatial analysis for organisations that make place-based decisions. You tell us the area. We tell you which neighbourhoods to prioritise and why.</p>
-
-    <div class="ribbon">
-      <a href="mailto:jules@bucklandanalytics.co.uk?subject=Retrofit%20targeting">Retrofit</a>
-      <a href="mailto:jules@bucklandanalytics.co.uk?subject=Housing%20land%20supply">Housing supply</a>
-      <a href="mailto:jules@bucklandanalytics.co.uk?subject=Site%20selection">Site selection</a>
-      <a href="mailto:jules@bucklandanalytics.co.uk?subject=Custom%20spatial%20analysis">Custom</a>
-    </div>
-
-    <p class="cta"><strong>First analysis free.</strong> Call or email to get started.</p>
+<footer class="foot">
+  <div class="wrap">
+    <span>Jules Buckland &middot; Manchester &middot; Buro Happold alumni</span>
+    <span>&copy; 2026 Buckland Analytics</span>
   </div>
+</footer>
 
-  <div class="right">
-    <div class="map-card">
-      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.08"/>
-            <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.02"/>
-          </linearGradient>
-        </defs>
-        <rect width="400" height="300" fill="url(#g1)"/>
-        <!-- Simplified England outline with data regions -->
-        <g fill="none" stroke="var(--rule)" stroke-width="0.5">
-          <!-- Grid lines suggesting data grid -->
-          <line x1="80" y1="30" x2="80" y2="280"/>
-          <line x1="140" y1="30" x2="140" y2="280"/>
-          <line x1="200" y1="30" x2="200" y2="280"/>
-          <line x1="260" y1="30" x2="260" y2="280"/>
-          <line x1="320" y1="30" x2="320" y2="280"/>
-          <line x1="50" y1="60" x2="350" y2="60"/>
-          <line x1="50" y1="110" x2="350" y2="110"/>
-          <line x1="50" y1="160" x2="350" y2="160"/>
-          <line x1="50" y1="210" x2="350" y2="210"/>
-          <line x1="50" y1="260" x2="350" y2="260"/>
-        </g>
-        <!-- Data points — clustered to suggest real spatial distribution -->
-        <g fill="var(--accent)" opacity="0.7">
-          <!-- North East cluster -->
-          <circle cx="230" cy="55" r="6"/><circle cx="245" cy="48" r="4"/>
-          <circle cx="220" cy="65" r="3.5"/><circle cx="250" cy="62" r="5"/>
-          <!-- North West cluster (Manchester/Liverpool) -->
-          <circle cx="175" cy="95" r="8"/><circle cx="160" cy="88" r="5"/>
-          <circle cx="190" cy="100" r="4"/><circle cx="168" cy="105" r="6"/>
-          <circle cx="155" cy="98" r="3"/>
-          <!-- Yorkshire -->
-          <circle cx="225" cy="90" r="7"/><circle cx="240" cy="85" r="4"/>
-          <circle cx="215" cy="100" r="5"/>
-          <!-- Midlands -->
-          <circle cx="200" cy="145" r="6"/><circle cx="185" cy="150" r="4"/>
-          <circle cx="215" cy="140" r="5"/><circle cx="195" cy="158" r="3.5"/>
-          <!-- East -->
-          <circle cx="270" cy="155" r="4"/><circle cx="280" cy="165" r="5"/>
-          <!-- South East / London -->
-          <circle cx="245" cy="200" r="9"/><circle cx="260" cy="195" r="5"/>
-          <circle cx="235" cy="210" r="6"/><circle cx="255" cy="210" r="4"/>
-          <circle cx="270" cy="205" r="3.5"/>
-          <!-- South West -->
-          <circle cx="140" cy="220" r="5"/><circle cx="125" cy="230" r="4"/>
-          <circle cx="155" cy="235" r="3.5"/>
-          <!-- Scattered smaller -->
-          <circle cx="200" cy="120" r="3"/><circle cx="170" cy="170" r="3"/>
-          <circle cx="290" cy="180" r="2.5"/><circle cx="150" cy="130" r="2.5"/>
-        </g>
-        <!-- Highlight ring on one cluster -->
-        <circle cx="175" cy="95" r="18" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
-        <!-- Annotation -->
-        <text x="198" cy="92" y="92" font-size="10" font-family="system-ui,sans-serif" font-weight="600" fill="var(--accent)" opacity="0.8">6,800+ areas ranked</text>
-      </svg>
-      <span class="map-label">Neighbourhood-level coverage across England</span>
-    </div>
-  </div>
-</div>
+<script>
+(function(){
+  // --- Seeded PRNG (Mulberry32) ---
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;
+    var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
+    return((t^t>>>14)>>>0)/4294967296}}
 
-<div class="foot">Jules Buckland &middot; Manchester &middot; Buro Happold alumni</div>
+  // --- England boundary test ---
+  function inEngland(lat,lon){
+    if(lat<49.95||lat>55.8||lon<-5.8||lon>1.8)return false;
+    var w;
+    if(lat>55.2)w=-2.2;
+    else if(lat>54.5)w=-2.8;
+    else if(lat>54.0)w=-3.3;
+    else if(lat>53.2)w=-3.1;
+    else if(lat>52.5)w=-3.0;
+    else if(lat>51.8)w=-2.8;
+    else if(lat>51.3)w=-3.2;
+    else if(lat>50.8)w=-3.8;
+    else if(lat>50.3)w=-4.5;
+    else if(lat>50.0)w=-5.3;
+    else w=-5.7;
+    if(lon<w)return false;
+    var e;
+    if(lat>54.8)e=-1.0;
+    else if(lat>54.0)e=-0.1;
+    else if(lat>53.5)e=0.1;
+    else if(lat>53.0)e=0.4;
+    else if(lat>52.4)e=1.8;
+    else if(lat>51.8)e=1.6;
+    else if(lat>51.2)e=1.4;
+    else if(lat>50.5)e=0.5;
+    else e=-0.5;
+    if(lon>e)return false;
+    if(lat>52.7&&lat<53.1&&lon>0.4)return false;
+    return true;
+  }
 
+  // --- City centres ---
+  var CITIES=[
+    [51.509,-0.118,1100,"London"],[52.489,-1.898,340,"Birmingham"],
+    [53.483,-2.244,300,"Manchester"],[53.801,-1.549,230,"Leeds"],
+    [53.383,-1.467,180,"Sheffield"],[53.408,-2.991,240,"Liverpool"],
+    [51.455,-2.587,170,"Bristol"],[54.978,-1.617,170,"Newcastle"],
+    [52.950,-1.150,130,"Nottingham"],[52.637,-1.133,120,"Leicester"],
+    [53.753,-0.334,100,"Hull"],[53.002,-2.179,90,"Stoke"],
+    [52.406,-1.510,90,"Coventry"],[51.752,-1.258,70,"Oxford"],
+    [52.205,0.121,60,"Cambridge"],[50.721,-1.878,65,"Bournemouth"],
+    [50.376,-4.143,55,"Plymouth"],[50.826,-0.153,75,"Brighton"],
+    [50.909,-1.404,80,"Southampton"],[50.799,-1.091,70,"Portsmouth"],
+    [53.959,-1.080,60,"York"],[54.526,-1.551,40,"Darlington"],
+    [54.775,-1.574,40,"Durham"],[52.192,-2.220,40,"Worcester"],
+    [52.680,-2.445,50,"Telford"],[53.191,-2.893,45,"Chester"],
+    [54.047,-2.800,30,"Lancaster"],[54.660,-1.212,50,"Middlesbrough"],
+    [51.882,-2.245,35,"Gloucester"],[53.576,-2.429,80,"Bolton"],
+    [53.590,-2.295,70,"Bury"],[53.395,-2.125,70,"Stockport"],
+    [53.539,-2.117,55,"Oldham"],[53.453,-2.589,40,"Warrington"],
+    [53.645,-1.783,60,"Huddersfield"],[53.690,-1.499,45,"Wakefield"],
+    [51.250,-0.770,45,"Guildford"],[54.900,-1.384,50,"Sunderland"],
+    [53.228,-0.539,35,"Lincoln"],[50.718,-3.533,40,"Exeter"],
+    [53.765,-2.717,40,"Blackburn"],[53.810,-3.055,45,"Blackpool"],
+    [52.629,-1.692,30,"Walsall"],[52.586,-2.129,30,"Dudley"],
+    [51.380,-2.360,30,"Bath"],[51.269,0.521,30,"Maidstone"],
+    [51.115,1.320,20,"Canterbury"],[51.281,-0.839,25,"Farnborough"],
+    [53.560,-1.480,30,"Barnsley"],[53.745,-0.648,25,"Beverley"],
+    [52.240,0.713,20,"Bury St Edmunds"],[52.630,1.300,25,"Norwich"],
+    [50.370,-3.490,20,"Torquay"],[51.900,0.890,25,"Colchester"],
+    [51.620,-0.300,30,"Barnet"],[51.340,-0.740,25,"Woking"]
+  ];
+
+  // --- Generate 6800 points ---
+  function generatePoints(){
+    var rng=mulberry32(42);
+    var pts=[];
+    var attempts=0;
+    while(pts.length<6800&&attempts<500000){
+      attempts++;
+      var lat=49.95+rng()*5.85;
+      var lon=-5.7+rng()*7.5;
+      if(!inEngland(lat,lon))continue;
+
+      var maxW=0,near="Rural";
+      for(var i=0;i<CITIES.length;i++){
+        var c=CITIES[i];
+        var dlat=lat-c[0],dlon=lon-c[1];
+        var d2=dlat*dlat+dlon*dlon;
+        var r2=c[2]*0.000003;
+        var w=c[2]*Math.exp(-d2/(2*r2));
+        if(w>maxW){maxW=w;near=c[3]}
+      }
+      var accept=0.04+0.96*Math.min(1,maxW/80);
+      if(rng()<accept){
+        var latN=(lat-49.95)/5.85;
+        var londonD=Math.sqrt((lat-51.509)*(lat-51.509)+(lon+0.118)*(lon+0.118));
+        var urban=Math.min(1,maxW/120);
+        pts.push({
+          lat:lat,lon:lon,name:near,
+          retrofit:clamp(0.38*latN+0.32*urban+0.30*rng()),
+          housing:clamp(0.48*Math.max(0,1-londonD/3.5)+0.25*urban+0.27*rng()),
+          site:clamp(0.55*urban+0.15*(0.5+0.5*Math.sin(lat*3))+0.30*rng())
+        });
+      }
+    }
+    pts.sort(function(a,b){return a.lat-b.lat});
+    return pts;
+  }
+  function clamp(v){return v<0?0:v>1?1:v}
+
+  // --- Color scale ---
+  function scoreToColor(score){
+    var stops=[
+      {t:0,r:51,g:65,b:85,a:.35},
+      {t:.2,r:59,g:130,b:246,a:.55},
+      {t:.4,r:6,g:182,b:212,a:.65},
+      {t:.6,r:34,g:197,b:94,a:.75},
+      {t:.8,r:250,g:204,b:21,a:.88},
+      {t:1,r:239,g:68,b:68,a:1}
+    ];
+    var a=stops[0],b=stops[stops.length-1];
+    for(var i=0;i<stops.length-1;i++){
+      if(score>=stops[i].t&&score<=stops[i+1].t){a=stops[i];b=stops[i+1];break}
+    }
+    var f=b.t===a.t?0:(score-a.t)/(b.t-a.t);
+    return'rgba('+Math.round(a.r+(b.r-a.r)*f)+','+
+      Math.round(a.g+(b.g-a.g)*f)+','+
+      Math.round(a.b+(b.b-a.b)*f)+','+
+      (a.a+(b.a-a.a)*f).toFixed(2)+')';
+  }
+
+  // --- State ---
+  var canvas=document.getElementById('map');
+  var ctx=canvas.getContext('2d');
+  var tipEl=document.getElementById('tooltip');
+  var points=generatePoints();
+  var mode='retrofit';
+  var hovered=null;
+  var offscreen=null;
+  var dpr=window.devicePixelRatio||1;
+  var W,H;
+
+  // --- Projection ---
+  var LAT_MIN=49.8,LAT_MAX=56.0,LON_MIN=-6.0,LON_MAX=2.0;
+  var LON_CORR=0.62;
+  var padX,padY,scaleY,scaleX,engW;
+
+  function calcProjection(){
+    scaleY=H/(LAT_MAX-LAT_MIN);
+    engW=(LON_MAX-LON_MIN)*scaleY*LON_CORR;
+    padX=(W-engW)/2;
+    padY=0;
+  }
+
+  function project(lat,lon){
+    var x=padX+((lon-LON_MIN)/(LON_MAX-LON_MIN))*engW;
+    var y=padY+((LAT_MAX-lat)/(LAT_MAX-LAT_MIN))*H;
+    return[x,y];
+  }
+
+  // --- Sizing ---
+  function resize(){
+    var rect=canvas.parentElement.getBoundingClientRect();
+    W=rect.width;H=rect.height;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    canvas.style.width=W+'px';canvas.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    calcProjection();
+    drawOffscreen();
+    compositeFrame();
+  }
+
+  // --- Draw offscreen buffer ---
+  function drawOffscreen(){
+    offscreen=document.createElement('canvas');
+    offscreen.width=canvas.width;offscreen.height=canvas.height;
+    var oc=offscreen.getContext('2d');
+    oc.setTransform(dpr,0,0,dpr,0,0);
+    var r=Math.max(2,Math.min(3.5,W/320));
+    for(var i=0;i<points.length;i++){
+      var p=points[i];
+      var xy=project(p.lat,p.lon);
+      oc.beginPath();
+      oc.arc(xy[0],xy[1],r,0,6.283);
+      oc.fillStyle=scoreToColor(p[mode]);
+      oc.fill();
+    }
+  }
+
+  // --- Composite final frame ---
+  function compositeFrame(){
+    ctx.clearRect(0,0,W,H);
+    if(offscreen)ctx.drawImage(offscreen,0,0,canvas.width,canvas.height,0,0,W,H);
+    if(hovered){
+      var xy=project(hovered.lat,hovered.lon);
+      var r=Math.max(3,Math.min(5,W/240));
+      ctx.beginPath();ctx.arc(xy[0],xy[1],r+4,0,6.283);
+      ctx.fillStyle='rgba(255,255,255,.15)';ctx.fill();
+      ctx.beginPath();ctx.arc(xy[0],xy[1],r+1,0,6.283);
+      ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.beginPath();ctx.arc(xy[0],xy[1],r,0,6.283);
+      ctx.fillStyle=scoreToColor(hovered[mode]);ctx.fill();
+    }
+  }
+
+  // --- Find nearest point ---
+  function findNearest(mx,my){
+    var best=null,bestD=Infinity;
+    var threshold=Math.max(8,W/80);
+    for(var i=0;i<points.length;i++){
+      var xy=project(points[i].lat,points[i].lon);
+      var dx=xy[0]-mx,dy=xy[1]-my;
+      var d=dx*dx+dy*dy;
+      if(d<bestD){bestD=d;best=points[i]}
+    }
+    return bestD<threshold*threshold?best:null;
+  }
+
+  // --- Tooltip content ---
+  function buildTooltip(p){
+    var rng=mulberry32(Math.round(p.lat*1e4)^Math.round(p.lon*1e4));
+    var score=p[mode];
+    var rank=Math.max(1,Math.round((1-score)*6800));
+    var html='<div class="tooltip-name">'+p.name+'</div>';
+    html+='<div class="tooltip-rank">Rank '+rank.toLocaleString()+' / 6,800</div>';
+
+    if(mode==='retrofit'){
+      html+=row('Fuel poverty',(8+score*28).toFixed(1)+'%');
+      html+=row('Avg EPC band',['C','C','D','D','E'][Math.floor(rng()*5)]);
+      html+=row('Retrofit est.','&pound;'+(0.4+score*3.8).toFixed(1)+'M');
+      html+=row('Vulnerability',(2+score*7.5).toFixed(1)+' / 10');
+    }else if(mode==='housing'){
+      html+=row('5YHLS deficit',(0.5+score*4.2).toFixed(1)+' yrs');
+      html+=row('Affordability',(4+score*12).toFixed(1)+'x');
+      html+=row('Dev. pressure',score>0.7?'High':score>0.4?'Medium':'Low');
+      html+=row('Unmet need',(50+score*400).toFixed(0)+' /yr');
+    }else{
+      html+=row('Catchment 15m',(5+score*55).toFixed(0)+',000');
+      html+=row('Competitor dens.',(0.5+rng()*4).toFixed(1));
+      html+=row('Growth trend','+'+(0.5+score*6).toFixed(1)+'%');
+      html+=row('Access index',(3+score*6.5).toFixed(1)+' / 10');
+    }
+    return html;
+  }
+  function row(label,val){
+    return'<div class="tooltip-row"><span class="tooltip-label">'+label+'</span><span class="tooltip-val">'+val+'</span></div>';
+  }
+
+  // --- Mouse/touch handlers ---
+  function handlePointer(mx,my,clientX,clientY){
+    var p=findNearest(mx,my);
+    if(p!==hovered){
+      hovered=p;
+      compositeFrame();
+      if(p){
+        tipEl.innerHTML=buildTooltip(p);
+        tipEl.classList.add('show');
+      }else{
+        tipEl.classList.remove('show');
+      }
+    }
+    if(p){
+      var rect=canvas.getBoundingClientRect();
+      var tx=clientX-rect.left+14;
+      var ty=clientY-rect.top-10;
+      if(tx+230>rect.width)tx=clientX-rect.left-240;
+      if(ty+160>rect.height)ty=clientY-rect.top-170;
+      if(ty<0)ty=8;
+      tipEl.style.left=tx+'px';tipEl.style.top=ty+'px';
+    }
+  }
+
+  canvas.addEventListener('mousemove',function(e){
+    var rect=canvas.getBoundingClientRect();
+    handlePointer(e.clientX-rect.left,e.clientY-rect.top,e.clientX,e.clientY);
+  });
+  canvas.addEventListener('mouseleave',function(){
+    hovered=null;compositeFrame();tipEl.classList.remove('show');
+  });
+  canvas.addEventListener('touchstart',function(e){
+    e.preventDefault();
+    var t=e.touches[0],rect=canvas.getBoundingClientRect();
+    handlePointer(t.clientX-rect.left,t.clientY-rect.top,t.clientX,t.clientY);
+  },{passive:false});
+  canvas.addEventListener('touchmove',function(e){
+    e.preventDefault();
+    var t=e.touches[0],rect=canvas.getBoundingClientRect();
+    handlePointer(t.clientX-rect.left,t.clientY-rect.top,t.clientX,t.clientY);
+  },{passive:false});
+  canvas.addEventListener('touchend',function(){
+    hovered=null;compositeFrame();tipEl.classList.remove('show');
+  });
+
+  // --- Tab switching ---
+  var tabBtns=document.querySelectorAll('.tabs button');
+  for(var i=0;i<tabBtns.length;i++){
+    tabBtns[i].addEventListener('click',function(){
+      for(var j=0;j<tabBtns.length;j++)tabBtns[j].classList.remove('active');
+      this.classList.add('active');
+      mode=this.getAttribute('data-mode');
+      hovered=null;tipEl.classList.remove('show');
+      drawOffscreen();compositeFrame();
+    });
+  }
+
+  // --- Entrance animation ---
+  var animated=false;
+  function animateEntrance(){
+    if(animated)return;animated=true;
+    var start=performance.now(),dur=1800;
+    var r=Math.max(2,Math.min(3.5,W/320));
+    function frame(now){
+      var t=Math.min(1,(now-start)/dur);
+      var ease=1-Math.pow(1-t,3);
+      ctx.clearRect(0,0,W,H);
+      for(var i=0;i<points.length;i++){
+        var p=points[i];
+        var latN=(p.lat-49.95)/5.85;
+        var pT=Math.max(0,Math.min(1,(ease-latN*0.4)/0.6));
+        if(pT<=0)continue;
+        var xy=project(p.lat,p.lon);
+        ctx.globalAlpha=pT;
+        ctx.beginPath();ctx.arc(xy[0],xy[1],r,0,6.283);
+        ctx.fillStyle=scoreToColor(p[mode]);ctx.fill();
+      }
+      ctx.globalAlpha=1;
+      if(t<1)requestAnimationFrame(frame);
+      else{drawOffscreen();compositeFrame();}
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // --- Init ---
+  var observer=new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){animateEntrance();observer.disconnect();}
+  },{threshold:0.15});
+
+  resize();
+  observer.observe(document.querySelector('.demo'));
+  window.addEventListener('resize',function(){
+    resize();
+    if(animated){drawOffscreen();compositeFrame();}
+  });
+})();
+</script>
 </body>
 </html>
