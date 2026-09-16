@@ -4,159 +4,166 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Buckland Analytics</title>
-<meta name="description" content="We rank where to invest, down to the neighbourhood. Free neighbourhood rankings for retrofit targeting and site selection across England.">
+<meta name="description" content="Neighbourhood-level rankings for retrofit targeting and site selection. 6,800+ areas across England, scored against 30+ public datasets. First ranking free.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0}
 :root{
-  --bg:#f5f4ef;--text:#1e293b;--heading:#0f172a;
-  --accent:#059669;--accent-hover:#047857;--accent-light:#d1fae5;
-  --muted:#64748b;--rule:#ddd9d0;--surface:#eae8e1;--card:#fff;
-  --serif:"Instrument Serif",Georgia,serif;
-  --sans:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --bg:#fff;--surface:#f7f8fb;--text:#334155;--heading:#0f172a;
+  --accent:#1e40af;--accent-hover:#1e3a8a;--accent-light:#dbeafe;
+  --muted:#64748b;--rule:#e2e8f0;--card:#fff;
+  --score-high:#dc2626;--score-mid:#d97706;--score-low:#2563eb;
+  --serif:"Newsreader",Georgia,serif;
+  --sans:"Inter","Segoe UI",system-ui,sans-serif;
   --mono:"IBM Plex Mono","Consolas",monospace;
 }
 @media(prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#0f1419;--text:#94a3b8;--heading:#e2e8f0;
-    --accent:#34d399;--accent-hover:#6ee7b7;--accent-light:#064e3b;
-    --muted:#64748b;--rule:#1e293b;--surface:#1a2332;--card:#1e293b;
+    --bg:#0c1220;--surface:#141e30;--text:#94a3b8;--heading:#e2e8f0;
+    --accent:#60a5fa;--accent-hover:#93bbfd;--accent-light:#1e3a5f;
+    --muted:#64748b;--rule:#1e293b;--card:#182234;
+    --score-high:#f87171;--score-mid:#fbbf24;--score-low:#60a5fa;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0f1419;--text:#94a3b8;--heading:#e2e8f0;
-  --accent:#34d399;--accent-hover:#6ee7b7;--accent-light:#064e3b;
-  --muted:#64748b;--rule:#1e293b;--surface:#1a2332;--card:#1e293b;
+  --bg:#0c1220;--surface:#141e30;--text:#94a3b8;--heading:#e2e8f0;
+  --accent:#60a5fa;--accent-hover:#93bbfd;--accent-light:#1e3a5f;
+  --muted:#64748b;--rule:#1e293b;--card:#182234;
+  --score-high:#f87171;--score-mid:#fbbf24;--score-low:#60a5fa;
 }
 
-html{font:17px/1.6 var(--sans);color:var(--text);background:var(--bg);
+html{font:16px/1.6 var(--sans);color:var(--text);background:var(--bg);
   -webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{background:var(--bg);padding:0}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
-img{max-width:100%}
 
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
 
 /* --- Nav --- */
-.nav{border-bottom:1px solid var(--rule)}
+.nav{border-bottom:1px solid var(--rule);position:sticky;top:0;background:var(--bg);z-index:50}
 .nav .wrap{display:flex;justify-content:space-between;align-items:center;
-  padding-top:18px;padding-bottom:18px;flex-wrap:wrap;gap:6px 20px}
-.logo{font:400 22px/1 var(--serif);color:var(--heading);white-space:nowrap}
-.nav-links{display:flex;gap:20px;font-size:14px;font-weight:500}
-.nav-links a{color:var(--heading)}
+  padding-top:14px;padding-bottom:14px;flex-wrap:wrap;gap:6px 20px}
+.logo{font:500 20px/1 var(--serif);color:var(--heading);white-space:nowrap;letter-spacing:-0.01em}
+.nav-links{display:flex;gap:18px;font-size:13px;font-weight:500;color:var(--muted)}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--accent)}
 
 /* --- Hero --- */
-.hero{padding:72px 0 64px}
-.hero-inner{max-width:620px}
-.hero h1{font:400 46px/1.12 var(--serif);color:var(--heading);
-  letter-spacing:-0.01em;text-wrap:balance}
-.hero .sub{margin-top:20px;font-size:18px;max-width:540px;color:var(--text)}
-.hero-cta{display:inline-flex;align-items:center;gap:8px;margin-top:28px;
-  padding:14px 28px;background:var(--accent);color:#fff;font-weight:600;
-  font-size:15px;border-radius:6px;text-decoration:none;transition:background .2s}
+.hero{padding:72px 0 56px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.hero h1{font:400 42px/1.1 var(--serif);color:var(--heading);
+  letter-spacing:-0.02em;text-wrap:balance}
+.hero .sub{margin-top:18px;font-size:17px;max-width:480px;color:var(--text);line-height:1.65}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;margin-top:24px;
+  padding:13px 26px;background:var(--accent);color:#fff;font-weight:600;
+  font-size:14px;border-radius:5px;text-decoration:none;transition:background .2s;letter-spacing:0.01em}
 .hero-cta:hover{background:var(--accent-hover);text-decoration:none}
-.hero-proof{margin-top:32px;font-size:14px;color:var(--muted);display:flex;gap:24px;flex-wrap:wrap}
+.hero-proof{margin-top:20px;font-size:13px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap}
 .hero-proof span{white-space:nowrap}
 
-/* --- Demo --- */
-.demo{background:#0c1421;padding:56px 0 48px;position:relative}
-.demo-head{text-align:center;margin-bottom:8px}
-.demo-head h2{font:400 32px/1.2 var(--serif);color:#e2e8f0}
-.demo-head p{color:#94a3b8;margin-top:6px;font-size:15px}
-.tabs{display:flex;justify-content:center;gap:4px;margin:20px 0 24px;flex-wrap:wrap}
-.tabs button{background:transparent;border:1px solid #334155;color:#94a3b8;
-  padding:9px 20px;font:500 14px/1 var(--sans);border-radius:5px;cursor:pointer;
-  transition:all .15s}
-.tabs button:hover{border-color:#475569;color:#cbd5e1}
-.tabs button.active{background:#1e293b;border-color:#475569;color:#f1f5f9}
+/* --- Hero visual --- */
+.hero-visual{position:relative;height:380px;border-radius:8px;overflow:hidden;background:#0c1421}
+.hero-visual canvas{display:block;width:100%;height:100%}
+.hero-visual .overlay{position:absolute;inset:0;display:flex;align-items:flex-end;
+  padding:20px;background:linear-gradient(to top,rgba(12,20,33,0.8) 0%,transparent 50%)}
+.overlay-text{color:#e2e8f0;font-size:13px;font-family:var(--mono)}
+.overlay-text strong{display:block;font-size:18px;font-weight:500;margin-bottom:2px;font-family:var(--sans)}
 
-.map-wrap{position:relative;width:100%;max-width:1080px;margin:0 auto;padding:0 24px}
-.map-container{position:relative;width:100%;height:600px;cursor:crosshair}
-#map{display:block;width:100%;height:100%}
-.tooltip{position:absolute;background:rgba(15,23,42,.95);border:1px solid rgba(255,255,255,.1);
-  border-radius:8px;padding:12px 16px;color:#e2e8f0;font-size:13px;line-height:1.5;
-  pointer-events:none;opacity:0;transition:opacity .12s;max-width:230px;z-index:10;
-  font-family:var(--sans);backdrop-filter:blur(8px)}
-.tooltip.show{opacity:1}
-.tooltip-name{font-weight:600;font-size:14px;color:#f1f5f9;margin-bottom:2px}
-.tooltip-rank{font-family:var(--mono);font-size:12px;margin-bottom:8px;color:#94a3b8}
-.tooltip-row{display:flex;justify-content:space-between;gap:16px;font-size:12px;
-  padding:2px 0;border-top:1px solid rgba(255,255,255,.06)}
-.tooltip-row:first-of-type{border-top:none}
-.tooltip-label{color:#94a3b8}
-.tooltip-val{font-family:var(--mono);font-weight:500;color:#e2e8f0;text-align:right}
+/* --- Sample --- */
+.sample{padding:64px 0;background:var(--surface)}
+.sample-head{margin-bottom:32px}
+.sample-head h2{font:400 30px/1.2 var(--serif);color:var(--heading)}
+.sample-head p{margin-top:8px;color:var(--muted);font-size:15px}
+.sample-label{display:inline-block;font:500 11px/1 var(--mono);letter-spacing:0.06em;
+  text-transform:uppercase;color:var(--accent);background:var(--accent-light);
+  padding:5px 10px;border-radius:3px;margin-bottom:16px}
 
-.legend{display:flex;align-items:center;justify-content:center;gap:10px;
-  margin-top:20px;font-size:12px;color:#64748b}
-.legend-bar{width:160px;height:8px;border-radius:4px;
-  background:linear-gradient(90deg,#1a2340,#2563eb,#06b6d4,#22c55e,#eab308,#ef4444)}
+.ranking{width:100%;border-collapse:collapse;font-size:14px}
+.ranking thead{text-align:left}
+.ranking th{font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;
+  color:var(--muted);padding:10px 12px;border-bottom:2px solid var(--rule)}
+.ranking td{padding:12px;border-bottom:1px solid var(--rule);vertical-align:middle}
+.ranking tbody tr:hover{background:var(--accent-light)}
+.ranking .rank{font-family:var(--mono);font-weight:500;color:var(--heading);width:48px;text-align:center}
+.ranking .area{font-weight:500;color:var(--heading)}
+.ranking .area small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:1px}
+.ranking .score-cell{width:140px}
+.ranking .factors{font-size:13px;color:var(--muted);max-width:260px}
 
-.demo-stats{display:flex;justify-content:center;gap:48px;margin-top:28px;flex-wrap:wrap}
-.demo-stat{text-align:center}
-.demo-stat .num{font:500 28px/1 var(--mono);color:#f1f5f9}
-.demo-stat .label{font-size:13px;color:#64748b;margin-top:4px}
+.score-bar{display:flex;align-items:center;gap:8px}
+.score-track{flex:1;height:6px;background:var(--rule);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.score-num{font-family:var(--mono);font-weight:500;font-size:13px;min-width:24px;color:var(--heading)}
 
-/* --- Applications --- */
-.apps{padding:80px 0}
-.apps h2{font:400 36px/1.15 var(--serif);color:var(--heading);text-wrap:balance}
-.apps>div>p{margin-top:12px;font-size:17px;max-width:560px;color:var(--muted)}
-.app-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:40px}
-.app-card{padding:28px;border:1px solid var(--rule);border-radius:8px;
-  background:var(--card);transition:border-color .2s,box-shadow .2s;cursor:pointer}
-.app-card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(5,150,105,.08)}
-.app-card h3{font:400 22px/1.2 var(--serif);color:var(--heading)}
-.app-card .result{font-weight:500;color:var(--accent);font-size:14px;
-  margin:8px 0 12px;text-transform:uppercase;letter-spacing:.04em}
-.app-card p{font-size:15px;color:var(--text);line-height:1.55}
-.app-card .card-explore{display:inline-flex;align-items:center;gap:5px;
-  margin-top:16px;font-size:14px;font-weight:500;color:var(--accent);
-  transition:gap .2s}
-.app-card:hover .card-explore{gap:8px}
+.sample-footer{margin-top:20px;font-size:13px;color:var(--muted);line-height:1.6}
+.sample-cta{display:inline-flex;align-items:center;gap:6px;margin-top:16px;
+  font-weight:600;font-size:14px;color:var(--accent)}
 
-/* --- Process --- */
-.process{padding:64px 0 80px;border-top:1px solid var(--rule)}
-.process h2{font:400 32px/1.2 var(--serif);color:var(--heading)}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:36px;
-  counter-reset:step}
-.step{counter-increment:step;position:relative;padding-left:0}
-.step::before{content:counter(step);font:500 13px/1 var(--mono);
-  display:inline-flex;align-items:center;justify-content:center;
-  width:28px;height:28px;border-radius:50%;background:var(--accent-light);
+/* --- Services --- */
+.services{padding:72px 0}
+.services h2{font:400 30px/1.2 var(--serif);color:var(--heading);text-wrap:balance;margin-bottom:8px}
+.services>div>p{color:var(--muted);font-size:15px;margin-bottom:36px}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.svc{padding:28px;border:1px solid var(--rule);border-radius:6px;background:var(--card)}
+.svc-tag{font:500 11px/1 var(--mono);letter-spacing:0.06em;text-transform:uppercase;
   color:var(--accent);margin-bottom:12px}
-.step h3{font:600 16px/1.3 var(--sans);color:var(--heading);margin-bottom:6px}
-.step p{font-size:15px;color:var(--muted)}
+.svc h3{font:500 20px/1.25 var(--serif);color:var(--heading);margin-bottom:10px}
+.svc p{font-size:14px;color:var(--text);line-height:1.6}
+.svc-for{margin-top:12px;font-size:13px;color:var(--muted);font-style:italic}
+
+/* --- Method --- */
+.method{padding:64px 0;border-top:1px solid var(--rule)}
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.method h2{font:400 28px/1.2 var(--serif);color:var(--heading);margin-bottom:14px}
+.method p{font-size:15px;line-height:1.7;color:var(--text)}
+.source-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.badge{font:500 12px/1 var(--mono);padding:6px 12px;border-radius:4px;
+  background:var(--surface);color:var(--muted);border:1px solid var(--rule)}
+
+.cred h3{font:500 18px/1.3 var(--serif);color:var(--heading);margin-bottom:10px}
+.cred p{font-size:14px;line-height:1.7;color:var(--text)}
+.cred-list{list-style:none;padding:0;margin-top:14px}
+.cred-list li{font-size:14px;color:var(--text);padding:5px 0;padding-left:18px;position:relative}
+.cred-list li::before{content:"";position:absolute;left:0;top:12px;width:6px;height:6px;
+  border-radius:50%;background:var(--accent)}
 
 /* --- CTA --- */
-.cta-band{background:var(--accent);padding:56px 0;text-align:center}
-.cta-band h2{font:400 34px/1.15 var(--serif);color:#fff}
-.cta-band p{color:rgba(255,255,255,.85);margin-top:10px;font-size:17px}
-.cta-contacts{display:flex;justify-content:center;gap:28px;margin-top:24px;flex-wrap:wrap}
-.cta-contacts a{color:#fff;font-weight:600;font-size:15px;
-  padding:12px 24px;border:2px solid rgba(255,255,255,.4);border-radius:6px;
-  transition:border-color .2s}
-.cta-contacts a:hover{border-color:#fff;text-decoration:none}
+.cta-band{padding:56px 0;text-align:center;background:var(--accent);margin-top:0}
+.cta-band h2{font:400 32px/1.15 var(--serif);color:#fff}
+.cta-band p{color:rgba(255,255,255,.8);margin-top:8px;font-size:16px}
+.cta-contacts{display:flex;justify-content:center;gap:16px;margin-top:24px;flex-wrap:wrap}
+.cta-contacts a{color:#fff;font-weight:600;font-size:14px;
+  padding:12px 24px;border:2px solid rgba(255,255,255,.35);border-radius:5px;
+  transition:border-color .2s,background .2s}
+.cta-contacts a:hover{border-color:#fff;background:rgba(255,255,255,.1);text-decoration:none}
 
 /* --- Footer --- */
-.foot{padding:20px 0;font-size:13px;color:var(--muted);border-top:1px solid var(--rule)}
+.foot{padding:20px 0;font-size:12px;color:var(--muted);border-top:1px solid var(--rule)}
 .foot .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
 
 /* --- Responsive --- */
-@media(max-width:768px){
-  .hero{padding:48px 0 40px}
+@media(max-width:860px){
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .hero-visual{height:280px}
   .hero h1{font-size:32px}
-  .hero .sub{font-size:16px}
-  .demo-head h2{font-size:24px}
-  .map-container{height:440px}
-  .demo-stats{gap:24px}
-  .demo-stat .num{font-size:22px}
-  .apps h2{font-size:28px}
-  .app-grid{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr;gap:24px}
+  .svc-grid{grid-template-columns:1fr}
+  .method-grid{grid-template-columns:1fr;gap:32px}
+  .ranking .factors{display:none}
   .cta-band h2{font-size:26px}
-  .process h2{font-size:26px}
+}
+@media(max-width:540px){
+  .hero{padding:48px 0 36px}
+  .hero h1{font-size:28px}
+  .hero .sub{font-size:15px}
+  .hero-visual{height:220px}
+  .sample-head h2{font-size:24px}
+  .services h2{font-size:24px}
+  .ranking{font-size:13px}
+  .ranking th,.ranking td{padding:8px 6px}
+  .score-cell{width:100px}
 }
 </style>
 </head>
@@ -174,82 +181,151 @@ img{max-width:100%}
 
 <section class="hero">
   <div class="wrap">
-    <div class="hero-inner">
-      <h1>We rank where to invest, down to the neighbourhood.</h1>
-      <p class="sub">You tell us the area. We score every neighbourhood on your criteria &mdash; fuel poverty, retrofit priority, catchment potential &mdash; and hand you a prioritised shortlist with the evidence to act on it.</p>
-      <a href="#demo" class="hero-cta">See the data &#8595;</a>
-      <div class="hero-proof">
-        <span>6,800+ areas across England</span>
-        <span>Results in 24 hours</span>
-        <span>First ranking free</span>
+    <div class="hero-grid">
+      <div>
+        <h1>We rank where to invest, down to the neighbourhood.</h1>
+        <p class="sub">Name an area and a question &mdash; which neighbourhoods to retrofit first, or where to open next. We score every neighbourhood against 30+ public datasets and hand you a prioritised shortlist within 24 hours.</p>
+        <a href="mailto:jules@bucklandanalytics.co.uk?subject=Free%20neighbourhood%20ranking%20request" class="hero-cta">Get your free ranking &rarr;</a>
+        <div class="hero-proof">
+          <span>6,800+ areas scored</span>
+          <span>30+ data sources</span>
+          <span>24hr turnaround</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <canvas id="map"></canvas>
+        <div class="overlay">
+          <div class="overlay-text">
+            <strong>6,800+ neighbourhoods</strong>
+            scored across England
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="demo" id="demo">
-  <div class="demo-head">
-    <h2>Explore 6,800+ English neighbourhoods</h2>
-    <p>Neighbourhood-level scoring across England. Hover any cell to inspect.</p>
-  </div>
-  <div class="tabs">
-    <button class="active" data-mode="retrofit">Retrofit targeting</button>
-    <button data-mode="site">Site selection</button>
-  </div>
-  <div class="map-wrap">
-    <div class="map-container">
-      <canvas id="map"></canvas>
-      <div class="tooltip" id="tooltip"></div>
+<section class="sample" id="sample">
+  <div class="wrap">
+    <div class="sample-head">
+      <span class="sample-label">Sample output</span>
+      <h2>Greater Manchester &mdash; Retrofit priority ranking</h2>
+      <p>Neighbourhoods ranked by retrofit need. Scores combine fuel poverty, housing age, EPC ratings, and vulnerability indicators from published data.</p>
     </div>
-  </div>
-  <div class="legend">
-    <span>Low priority</span>
-    <div class="legend-bar"></div>
-    <span>High priority</span>
-  </div>
-  <div class="demo-stats">
-    <div class="demo-stat"><div class="num">6,800+</div><div class="label">Neighbourhoods ranked</div></div>
-    <div class="demo-stat"><div class="num">30+</div><div class="label">Data sources integrated</div></div>
-    <div class="demo-stat"><div class="num">24hr</div><div class="label">Turnaround time</div></div>
+
+    <table class="ranking">
+      <thead>
+        <tr>
+          <th class="rank">#</th>
+          <th>Neighbourhood</th>
+          <th class="score-cell">Priority score</th>
+          <th class="factors">Key factors</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="rank">1</td>
+          <td class="area">Coldhurst &amp; Alexandra<small>Oldham</small></td>
+          <td class="score-cell"><div class="score-bar"><span class="score-num">94</span><div class="score-track"><div class="score-fill" style="width:94%;background:var(--score-high)"></div></div></div></td>
+          <td class="factors">Fuel poverty 28%, pre-1919 housing 47%, EPC E&ndash;F dominant</td>
+        </tr>
+        <tr>
+          <td class="rank">2</td>
+          <td class="area">Milkstone &amp; Deeplish<small>Rochdale</small></td>
+          <td class="score-cell"><div class="score-bar"><span class="score-num">91</span><div class="score-track"><div class="score-fill" style="width:91%;background:var(--score-high)"></div></div></div></td>
+          <td class="factors">Fuel poverty 26%, solid-wall construction, high vulnerability index</td>
+        </tr>
+        <tr>
+          <td class="rank">3</td>
+          <td class="area">Halliwell<small>Bolton</small></td>
+          <td class="score-cell"><div class="score-bar"><span class="score-num">87</span><div class="score-track"><div class="score-fill" style="width:87%;background:var(--score-high)"></div></div></div></td>
+          <td class="factors">Fuel poverty 24%, pre-1919 terraces, EPC D&ndash;E band</td>
+        </tr>
+        <tr>
+          <td class="rank">4</td>
+          <td class="area">Ashton St Peter&rsquo;s<small>Tameside</small></td>
+          <td class="score-cell"><div class="score-bar"><span class="score-num">84</span><div class="score-track"><div class="score-fill" style="width:84%;background:var(--score-mid)"></div></div></div></td>
+          <td class="factors">Fuel poverty 22%, low-income concentration, ageing stock</td>
+        </tr>
+        <tr>
+          <td class="rank">5</td>
+          <td class="area">Broughton<small>Salford</small></td>
+          <td class="score-cell"><div class="score-bar"><span class="score-num">79</span><div class="score-track"><div class="score-fill" style="width:79%;background:var(--score-mid)"></div></div></div></td>
+          <td class="factors">Mixed tenure, retrofit investment gap, fuel poverty 20%</td>
+        </tr>
+        <tr>
+          <td class="rank">6</td>
+          <td class="area">Scholes<small>Wigan</small></td>
+          <td class="score-cell"><div class="score-bar"><span class="score-num">72</span><div class="score-track"><div class="score-fill" style="width:72%;background:var(--score-mid)"></div></div></div></td>
+          <td class="factors">ECO-eligible stock, housing age profile, fuel poverty 17%</td>
+        </tr>
+        <tr>
+          <td class="rank">7</td>
+          <td class="area">East<small>Bury</small></td>
+          <td class="score-cell"><div class="score-bar"><span class="score-num">65</span><div class="score-track"><div class="score-fill" style="width:65%;background:var(--score-low)"></div></div></div></td>
+          <td class="factors">Moderate need, mixed EPC profile, some newer stock</td>
+        </tr>
+        <tr>
+          <td class="rank">8</td>
+          <td class="area">Bramhall South<small>Stockport</small></td>
+          <td class="score-cell"><div class="score-bar"><span class="score-num">41</span><div class="score-track"><div class="score-fill" style="width:41%;background:var(--score-low)"></div></div></div></td>
+          <td class="factors">Lower priority, post-1980 housing, fuel poverty 9%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sample-footer">
+      Illustrative ranking using published indicators: BEIS fuel poverty estimates, EPC Register, Census 2021 dwelling age, IMD 2019 vulnerability domain. Client deliverables include full methodology, interactive maps, and neighbourhood-level detail for your area.
+    </div>
+    <a href="mailto:jules@bucklandanalytics.co.uk?subject=Free%20neighbourhood%20ranking%20request" class="sample-cta">Request a ranking for your area &rarr;</a>
   </div>
 </section>
 
-<section class="apps">
+<section class="services">
   <div class="wrap">
-    <h2>One ranking model. Two applications.</h2>
-    <p>Every project uses the same neighbourhood-level model. You tell us the question &mdash; we tell you where.</p>
-    <div class="app-grid">
-      <div class="app-card" data-app="retrofit">
-        <div class="result">What you get</div>
+    <h2>Two ways to use the ranking model</h2>
+    <p>Same methodology, different questions. You tell us the decision &mdash; we tell you where.</p>
+    <div class="svc-grid">
+      <div class="svc">
+        <div class="svc-tag">Retrofit targeting</div>
         <h3>Which neighbourhoods to retrofit first</h3>
-        <p>For local authorities and retrofit installers targeting WH:LG and ECO funding. Ranked by fuel poverty, housing age, EPC ratings and vulnerability &mdash; so you spend your budget where it counts.</p>
-        <span class="card-explore">Explore in map &#8595;</span>
+        <p>Fuel poverty, housing age, EPC ratings, vulnerability, and existing programme coverage &mdash; scored and ranked so you allocate WH:LG, ECO, and SHDF funding where it delivers the most impact.</p>
+        <div class="svc-for">For local authorities, housing associations, and retrofit installers.</div>
       </div>
-      <div class="app-card" data-app="site">
-        <div class="result">What you get</div>
+      <div class="svc">
+        <div class="svc-tag">Site selection</div>
         <h3>Which locations will perform best</h3>
-        <p>For operators choosing where to open, expand or consolidate. Catchments ranked by population, accessibility, competition density and growth trends.</p>
-        <span class="card-explore">Explore in map &#8595;</span>
+        <p>Population density, catchment accessibility, competitor proximity, growth trends, and demographic fit &mdash; ranked so you choose where to open, expand, or consolidate with evidence.</p>
+        <div class="svc-for">For operators, franchise groups, and commercial property teams.</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="process">
+<section class="method">
   <div class="wrap">
-    <h2>How it works</h2>
-    <div class="steps">
-      <div class="step">
-        <h3>Name your area</h3>
-        <p>A region, local authority, or postcode area. Tell us what decision you are making.</p>
+    <div class="method-grid">
+      <div>
+        <h2>How we rank</h2>
+        <p>Every neighbourhood in England is scored against 30+ indicators drawn from authoritative public datasets. Scores are percentile-normalised within your study area, weighted to your question, and delivered as a ranked shortlist with full methodology.</p>
+        <div class="source-badges">
+          <span class="badge">ONS Census 2021</span>
+          <span class="badge">EPC Register</span>
+          <span class="badge">BEIS fuel poverty</span>
+          <span class="badge">IMD 2019</span>
+          <span class="badge">OS OpenData</span>
+          <span class="badge">DLUHC housing stats</span>
+          <span class="badge">DfT accessibility</span>
+        </div>
       </div>
-      <div class="step">
-        <h3>We rank every neighbourhood</h3>
-        <p>Our model scores each area against 30+ data sources. Delivered within 24 hours.</p>
-      </div>
-      <div class="step">
-        <h3>You get a ranked shortlist</h3>
-        <p>Priority list, maps, scores and full methodology &mdash; ready for your board or funding bid.</p>
+      <div class="cred">
+        <h3>Built by Jules Buckland</h3>
+        <p>Spatial analyst, Manchester. Background in causal impact evaluation and neighbourhood-level data modelling.</p>
+        <ul class="cred-list">
+          <li>Buro Happold spatial analytics &mdash; causal evaluation of pedestrian footfall using difference-in-differences with matched comparison sites</li>
+          <li>Full-stack data pipeline: Python spatial processing, R statistical modelling, interactive dashboards</li>
+          <li>PPE, University of Manchester</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -257,22 +333,28 @@ img{max-width:100%}
 
 <section class="cta-band">
   <h2>Your first ranking is free.</h2>
-  <p>Name an area. We'll rank it in 24 hours. No strings.</p>
+  <p>Name an area. We rank it in 24 hours. No strings.</p>
   <div class="cta-contacts">
+    <a href="mailto:jules@bucklandanalytics.co.uk?subject=Free%20neighbourhood%20ranking%20request">jules@bucklandanalytics.co.uk</a>
     <a href="tel:+447915585402">07915 585402</a>
-    <a href="mailto:jules@bucklandanalytics.co.uk">jules@bucklandanalytics.co.uk</a>
   </div>
 </section>
 
 <footer class="foot">
   <div class="wrap">
-    <span>Jules Buckland &middot; Manchester &middot; Buro Happold alumni</span>
+    <span>Jules Buckland &middot; Manchester</span>
     <span>&copy; 2026 Buckland Analytics</span>
   </div>
 </footer>
 
 <script>
 (function(){
+  var canvas=document.getElementById('map');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var dpr=window.devicePixelRatio||1;
+  var W,H;
+
   function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;
     var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
     return((t^t>>>14)>>>0)/4294967296}}
@@ -280,104 +362,42 @@ img{max-width:100%}
   function inEngland(lat,lon){
     if(lat<49.95||lat>55.8||lon<-5.8||lon>1.8)return false;
     var w;
-    if(lat>55.2)w=-2.2;
-    else if(lat>54.5)w=-2.8;
-    else if(lat>54.0)w=-3.3;
-    else if(lat>53.2)w=-3.1;
-    else if(lat>52.5)w=-3.0;
-    else if(lat>51.8)w=-2.8;
-    else if(lat>51.3)w=-3.2;
-    else if(lat>50.8)w=-3.8;
-    else if(lat>50.3)w=-4.5;
-    else if(lat>50.0)w=-5.3;
-    else w=-5.7;
+    if(lat>55.2)w=-2.2;else if(lat>54.5)w=-2.8;else if(lat>54.0)w=-3.3;
+    else if(lat>53.2)w=-3.1;else if(lat>52.5)w=-3.0;else if(lat>51.8)w=-2.8;
+    else if(lat>51.3)w=-3.2;else if(lat>50.8)w=-3.8;else if(lat>50.3)w=-4.5;
+    else if(lat>50.0)w=-5.3;else w=-5.7;
     if(lon<w)return false;
     var e;
-    if(lat>54.8)e=-1.0;
-    else if(lat>54.0)e=-0.1;
-    else if(lat>53.5)e=0.1;
-    else if(lat>53.0)e=0.4;
-    else if(lat>52.4)e=1.8;
-    else if(lat>51.8)e=1.6;
-    else if(lat>51.2)e=1.4;
-    else if(lat>50.5)e=0.5;
-    else e=-0.5;
+    if(lat>54.8)e=-1.0;else if(lat>54.0)e=-0.1;else if(lat>53.5)e=0.1;
+    else if(lat>53.0)e=0.4;else if(lat>52.4)e=1.8;else if(lat>51.8)e=1.6;
+    else if(lat>51.2)e=1.4;else if(lat>50.5)e=0.5;else e=-0.5;
     if(lon>e)return false;
     if(lat>52.7&&lat<53.1&&lon>0.4)return false;
     return true;
   }
 
   var CITIES=[
-    [51.509,-0.118,1100,"London"],[52.489,-1.898,340,"Birmingham"],
-    [53.483,-2.244,300,"Manchester"],[53.801,-1.549,230,"Leeds"],
-    [53.383,-1.467,180,"Sheffield"],[53.408,-2.991,240,"Liverpool"],
-    [51.455,-2.587,170,"Bristol"],[54.978,-1.617,170,"Newcastle"],
-    [52.950,-1.150,130,"Nottingham"],[52.637,-1.133,120,"Leicester"],
-    [53.753,-0.334,100,"Hull"],[53.002,-2.179,90,"Stoke"],
-    [52.406,-1.510,90,"Coventry"],[51.752,-1.258,70,"Oxford"],
-    [52.205,0.121,60,"Cambridge"],[50.721,-1.878,65,"Bournemouth"],
-    [50.376,-4.143,55,"Plymouth"],[50.826,-0.153,75,"Brighton"],
-    [50.909,-1.404,80,"Southampton"],[50.799,-1.091,70,"Portsmouth"],
-    [53.959,-1.080,60,"York"],[54.526,-1.551,40,"Darlington"],
-    [54.775,-1.574,40,"Durham"],[52.192,-2.220,40,"Worcester"],
-    [52.680,-2.445,50,"Telford"],[53.191,-2.893,45,"Chester"],
-    [54.047,-2.800,30,"Lancaster"],[54.660,-1.212,50,"Middlesbrough"],
-    [51.882,-2.245,35,"Gloucester"],[53.576,-2.429,80,"Bolton"],
-    [53.590,-2.295,70,"Bury"],[53.395,-2.125,70,"Stockport"],
-    [53.539,-2.117,55,"Oldham"],[53.453,-2.589,40,"Warrington"],
-    [53.645,-1.783,60,"Huddersfield"],[53.690,-1.499,45,"Wakefield"],
-    [51.250,-0.770,45,"Guildford"],[54.900,-1.384,50,"Sunderland"],
-    [53.228,-0.539,35,"Lincoln"],[50.718,-3.533,40,"Exeter"],
-    [53.765,-2.717,40,"Blackburn"],[53.810,-3.055,45,"Blackpool"],
-    [52.629,-1.692,30,"Walsall"],[52.586,-2.129,30,"Dudley"],
-    [51.380,-2.360,30,"Bath"],[51.269,0.521,30,"Maidstone"],
-    [51.115,1.320,20,"Canterbury"],[51.281,-0.839,25,"Farnborough"],
-    [53.560,-1.480,30,"Barnsley"],[53.745,-0.648,25,"Beverley"],
-    [52.240,0.713,20,"Bury St Edmunds"],[52.630,1.300,25,"Norwich"],
-    [50.370,-3.490,20,"Torquay"],[51.900,0.890,25,"Colchester"],
-    [51.620,-0.300,30,"Barnet"],[51.340,-0.740,25,"Woking"]
+    [51.509,-0.118,1100],[52.489,-1.898,340],[53.483,-2.244,300],
+    [53.801,-1.549,230],[53.383,-1.467,180],[53.408,-2.991,240],
+    [51.455,-2.587,170],[54.978,-1.617,170],[52.950,-1.150,130],
+    [52.637,-1.133,120],[53.753,-0.334,100],[53.002,-2.179,90],
+    [52.406,-1.510,90],[51.752,-1.258,70],[52.205,0.121,60],
+    [50.721,-1.878,65],[50.376,-4.143,55],[50.826,-0.153,75],
+    [50.909,-1.404,80],[50.799,-1.091,70]
   ];
 
   function clamp(v){return v<0?0:v>1?1:v}
 
-  function scoreToColor(score){
-    var stops=[
-      {t:0,   r:22,g:32,b:62},
-      {t:.12, r:37,g:60,b:160},
-      {t:.25, r:59,g:130,b:246},
-      {t:.40, r:6,g:182,b:212},
-      {t:.55, r:34,g:197,b:94},
-      {t:.70, r:132,g:204,b:22},
-      {t:.82, r:234,g:179,b:8},
-      {t:.92, r:249,g:115,b:22},
-      {t:1,   r:239,g:68,b:68}
-    ];
-    var a=stops[0],b=stops[stops.length-1];
-    for(var i=0;i<stops.length-1;i++){
-      if(score>=stops[i].t&&score<=stops[i+1].t){a=stops[i];b=stops[i+1];break}
-    }
-    var f=b.t===a.t?0:(score-a.t)/(b.t-a.t);
-    return'rgb('+Math.round(a.r+(b.r-a.r)*f)+','+
-      Math.round(a.g+(b.g-a.g)*f)+','+
-      Math.round(a.b+(b.b-a.b)*f)+')';
+  function scoreToColor(s){
+    var r,g,b;
+    if(s<0.25){var t=s/0.25;r=12+t*20;g=24+t*50;b=60+t*120;}
+    else if(s<0.5){var t=(s-0.25)/0.25;r=32+t*30;g=74+t*80;b=180+t*40;}
+    else if(s<0.75){var t=(s-0.5)/0.25;r=62+t*130;g=154+t*50;b=220-t*100;}
+    else{var t=(s-0.75)/0.25;r=192+t*47;g=204-t*120;b=120-t*80;}
+    return'rgb('+Math.round(r)+','+Math.round(g)+','+Math.round(b)+')';
   }
 
-  // --- State ---
-  var canvas=document.getElementById('map');
-  var ctx=canvas.getContext('2d');
-  var tipEl=document.getElementById('tooltip');
-  var mode='retrofit';
-  var hoveredHex=null;
-  var offscreen=null;
-  var dpr=window.devicePixelRatio||1;
-  var W,H;
-  var hexes=[];
-  var hexMap={};
-  var hexSize,drawSize,colSpacing,rowSpacing;
-
-  // --- Projection ---
-  var LAT_MIN=49.8,LAT_MAX=56.0,LON_MIN=-6.0,LON_MAX=2.0;
-  var LON_CORR=0.62;
+  var LAT_MIN=49.8,LAT_MAX=56.0,LON_MIN=-6.0,LON_MAX=2.0,LON_CORR=0.62;
   var padX,engW;
 
   function calcProjection(){
@@ -385,95 +405,19 @@ img{max-width:100%}
     engW=(LON_MAX-LON_MIN)*scaleY*LON_CORR;
     padX=(W-engW)/2;
   }
-
-  function project(lat,lon){
-    var x=padX+((lon-LON_MIN)/(LON_MAX-LON_MIN))*engW;
-    var y=((LAT_MAX-lat)/(LAT_MAX-LAT_MIN))*H;
-    return[x,y];
-  }
-
   function unproject(x,y){
-    var lon=LON_MIN+((x-padX)/engW)*(LON_MAX-LON_MIN);
-    var lat=LAT_MAX-(y/H)*(LAT_MAX-LAT_MIN);
-    return[lat,lon];
+    return[LAT_MAX-(y/H)*(LAT_MAX-LAT_MIN),LON_MIN+((x-padX)/engW)*(LON_MAX-LON_MIN)];
   }
 
-  // --- Hex path (flat-top) ---
-  function drawHexPath(c,cx,cy,s){
+  function drawHex(c,cx,cy,s){
     c.beginPath();
-    for(var i=0;i<6;i++){
-      var ang=Math.PI/3*i;
-      var vx=cx+s*Math.cos(ang);
-      var vy=cy+s*Math.sin(ang);
-      if(i===0)c.moveTo(vx,vy);else c.lineTo(vx,vy);
-    }
+    for(var i=0;i<6;i++){var a=Math.PI/3*i;
+      var vx=cx+s*Math.cos(a),vy=cy+s*Math.sin(a);
+      i===0?c.moveTo(vx,vy):c.lineTo(vx,vy);}
     c.closePath();
   }
 
-  // --- Build hex grid ---
-  function buildHexGrid(){
-    hexSize=Math.max(4,Math.min(9,H/68));
-    drawSize=hexSize*0.90;
-    colSpacing=hexSize*1.5;
-    rowSpacing=Math.sqrt(3)*hexSize;
-
-    hexes=[];
-    hexMap={};
-
-    var maxCol=Math.ceil(W/colSpacing)+1;
-    var maxRow=Math.ceil(H/rowSpacing)+1;
-
-    for(var col=-1;col<=maxCol;col++){
-      for(var row=-1;row<=maxRow;row++){
-        var cx=col*colSpacing;
-        var cy=row*rowSpacing+(col&1?rowSpacing/2:0);
-
-        var ll=unproject(cx,cy);
-        var lat=ll[0],lon=ll[1];
-        if(!inEngland(lat,lon))continue;
-
-        var seed=Math.round((lat+90)*200)*100000+Math.round((lon+180)*200);
-        var rng=mulberry32(seed);
-        var n1=rng(),n2=rng(),n3=rng();
-
-        var maxW=0,near='Rural';
-        for(var i=0;i<CITIES.length;i++){
-          var c=CITIES[i];
-          var dlat=lat-c[0],dlon=lon-c[1];
-          var d2=dlat*dlat+dlon*dlon;
-          var r2=c[2]*0.000003;
-          var w=c[2]*Math.exp(-d2/(2*r2));
-          if(w>maxW){maxW=w;near=c[3]}
-        }
-
-        var latN=(lat-49.95)/5.85;
-        var londonD=Math.sqrt((lat-51.509)*(lat-51.509)+(lon+0.118)*(lon+0.118));
-        var urban=Math.min(1,maxW/120);
-
-        var key=col+','+row;
-        var h={
-          cx:cx,cy:cy,lat:lat,lon:lon,
-          col:col,row:row,key:key,
-          name:near,urban:urban,
-          retrofit:clamp(0.45*latN+0.35*urban+0.20*n1),
-          site:clamp(0.65*urban*urban+0.10*(0.5+0.5*Math.sin(lat*3))+0.25*n3)
-        };
-        hexes.push(h);
-        hexMap[key]=h;
-      }
-    }
-
-    // Percentile normalise each score
-    ['retrofit','site'].forEach(function(k){
-      var sorted=hexes.slice().sort(function(a,b){return a[k]-b[k]});
-      for(var i=0;i<sorted.length;i++){
-        sorted[i][k+'N']=i/Math.max(1,sorted.length-1);
-      }
-    });
-  }
-
-  // --- Sizing ---
-  function resize(){
+  function render(){
     var rect=canvas.parentElement.getBoundingClientRect();
     W=rect.width;H=rect.height;
     if(W<1||H<1)return;
@@ -481,266 +425,56 @@ img{max-width:100%}
     canvas.style.width=W+'px';canvas.style.height=H+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
     calcProjection();
-    buildHexGrid();
-    drawOffscreen();
-    compositeFrame();
-  }
 
-  // --- Offscreen buffer ---
-  function drawOffscreen(){
-    if(canvas.width<1||canvas.height<1)return;
-    offscreen=document.createElement('canvas');
-    offscreen.width=canvas.width;offscreen.height=canvas.height;
-    var oc=offscreen.getContext('2d');
-    oc.setTransform(dpr,0,0,dpr,0,0);
-
-    // Glow pass for high-priority hexes
-    for(var i=0;i<hexes.length;i++){
-      var h=hexes[i];
-      var score=h[mode+'N'];
-      if(score>0.72){
-        var glow=(score-0.72)/0.28;
-        drawHexPath(oc,h.cx,h.cy,drawSize*1.6);
-        oc.fillStyle='rgba(239,68,68,'+(glow*0.12).toFixed(3)+')';
-        oc.fill();
-      }
-    }
-
-    // Main hex pass
-    for(var i=0;i<hexes.length;i++){
-      var h=hexes[i];
-      drawHexPath(oc,h.cx,h.cy,drawSize);
-      oc.fillStyle=scoreToColor(h[mode+'N']);
-      oc.fill();
-    }
-  }
-
-  // --- Composite ---
-  function compositeFrame(){
-    if(W<1||H<1)return;
-    ctx.clearRect(0,0,W,H);
-    if(offscreen&&offscreen.width>0&&offscreen.height>0)
-      ctx.drawImage(offscreen,0,0,offscreen.width,offscreen.height,0,0,W,H);
-    if(hoveredHex){
-      // Bright fill
-      drawHexPath(ctx,hoveredHex.cx,hoveredHex.cy,drawSize);
-      ctx.fillStyle=scoreToColor(hoveredHex[mode+'N']);
-      ctx.fill();
-      // White border
-      drawHexPath(ctx,hoveredHex.cx,hoveredHex.cy,drawSize+1);
-      ctx.strokeStyle='rgba(255,255,255,0.85)';
-      ctx.lineWidth=2;
-      ctx.stroke();
-    }
-  }
-
-  // --- Hex lookup ---
-  function getHexAtPixel(px,py){
-    var approxCol=Math.round(px/colSpacing);
-    var offset=(approxCol&1)?rowSpacing/2:0;
-    var approxRow=Math.round((py-offset)/rowSpacing);
-
-    var best=null,bestD=Infinity;
-    for(var dc=-1;dc<=1;dc++){
-      for(var dr=-1;dr<=1;dr++){
-        var c=approxCol+dc,r=approxRow+dr;
-        var h=hexMap[c+','+r];
-        if(!h)continue;
-        var dx=px-h.cx,dy=py-h.cy;
-        var d=dx*dx+dy*dy;
-        if(d<bestD){bestD=d;best=h}
-      }
-    }
-    return(best&&bestD<hexSize*hexSize*1.3)?best:null;
-  }
-
-  // --- Tooltip ---
-  function buildTooltip(h){
-    var score=h[mode+'N'];
-    var totalH=hexes.length;
-    var rank=Math.max(1,Math.round((1-score)*totalH));
-    var hoods=Math.round(4+h.urban*9);
-
-    var html='<div class="tooltip-name">'+h.name+'</div>';
-    html+='<div class="tooltip-rank">Rank '+rank.toLocaleString()+' / '+totalH.toLocaleString()+' cells &middot; ~'+hoods+' areas</div>';
-
-    var s=h[mode];
-    if(mode==='retrofit'){
-      html+=row('Fuel poverty',(8+s*28).toFixed(1)+'%');
-      html+=row('Avg EPC band',s>0.7?'E':s>0.4?'D':'C');
-      html+=row('Retrofit est.','&pound;'+(0.4+s*3.8).toFixed(1)+'M');
-      html+=row('Vulnerability',(2+s*7.5).toFixed(1)+' / 10');
-    }else{
-      html+=row('Catchment 15m',(5+s*55).toFixed(0)+',000');
-      html+=row('Growth trend','+'+(0.5+s*6).toFixed(1)+'%');
-      html+=row('Access index',(3+s*6.5).toFixed(1)+' / 10');
-      html+=row('Competition',s>0.6?'Low':s>0.3?'Medium':'High');
-    }
-    return html;
-  }
-  function row(label,val){
-    return'<div class="tooltip-row"><span class="tooltip-label">'+label+'</span><span class="tooltip-val">'+val+'</span></div>';
-  }
-
-  // --- Hover handler ---
-  function handlePointer(mx,my,clientX,clientY){
-    if(transitioning)return;
-    var h=getHexAtPixel(mx,my);
-    if(h!==hoveredHex){
-      hoveredHex=h;
-      compositeFrame();
-      if(h){
-        tipEl.innerHTML=buildTooltip(h);
-        tipEl.classList.add('show');
-      }else{
-        tipEl.classList.remove('show');
-      }
-    }
-    if(h){
-      var rect=canvas.getBoundingClientRect();
-      var tx=clientX-rect.left+14;
-      var ty=clientY-rect.top-10;
-      if(tx+230>rect.width)tx=clientX-rect.left-240;
-      if(ty+160>rect.height)ty=clientY-rect.top-170;
-      if(ty<0)ty=8;
-      tipEl.style.left=tx+'px';tipEl.style.top=ty+'px';
-    }
-  }
-
-  canvas.addEventListener('mousemove',function(e){
-    var rect=canvas.getBoundingClientRect();
-    handlePointer(e.clientX-rect.left,e.clientY-rect.top,e.clientX,e.clientY);
-  });
-  canvas.addEventListener('mouseleave',function(){
-    hoveredHex=null;compositeFrame();tipEl.classList.remove('show');
-  });
-  canvas.addEventListener('touchstart',function(e){
-    e.preventDefault();
-    var t=e.touches[0],rect=canvas.getBoundingClientRect();
-    handlePointer(t.clientX-rect.left,t.clientY-rect.top,t.clientX,t.clientY);
-  },{passive:false});
-  canvas.addEventListener('touchmove',function(e){
-    e.preventDefault();
-    var t=e.touches[0],rect=canvas.getBoundingClientRect();
-    handlePointer(t.clientX-rect.left,t.clientY-rect.top,t.clientX,t.clientY);
-  },{passive:false});
-  canvas.addEventListener('touchend',function(){
-    hoveredHex=null;compositeFrame();tipEl.classList.remove('show');
-  });
-
-  // --- Tab transitions ---
-  var transitioning=false;
-  var transitionFrom={};
-  var transitionStart=0;
-  var TRANS_DUR=650;
-
-  function switchTab(newMode){
-    if(newMode===mode||transitioning)return;
-    for(var i=0;i<hexes.length;i++){
-      transitionFrom[hexes[i].key]=hexes[i][mode+'N'];
-    }
-    mode=newMode;
-    hoveredHex=null;tipEl.classList.remove('show');
-    transitionStart=performance.now();
-    transitioning=true;
-    requestAnimationFrame(animateTransition);
-  }
-
-  function animateTransition(now){
-    var t=Math.min(1,(now-transitionStart)/TRANS_DUR);
-    var ease=t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    var sz=Math.max(3,Math.min(7,H/60));
+    var ds=sz*0.88;
+    var colSp=sz*1.5,rowSp=Math.sqrt(3)*sz;
+    var maxCol=Math.ceil(W/colSp)+1,maxRow=Math.ceil(H/rowSp)+1;
 
     ctx.clearRect(0,0,W,H);
-    for(var i=0;i<hexes.length;i++){
-      var h=hexes[i];
-      var from=transitionFrom[h.key]||0;
-      var to=h[mode+'N'];
-      var s=from+(to-from)*ease;
-      drawHexPath(ctx,h.cx,h.cy,drawSize);
-      ctx.fillStyle=scoreToColor(s);
-      ctx.fill();
-    }
-    if(t<1){
-      requestAnimationFrame(animateTransition);
-    }else{
-      transitioning=false;
-      drawOffscreen();
-      compositeFrame();
-    }
-  }
 
-  // --- Tab buttons ---
-  var tabBtns=document.querySelectorAll('.tabs button');
-  for(var i=0;i<tabBtns.length;i++){
-    tabBtns[i].addEventListener('click',function(){
-      var newMode=this.getAttribute('data-mode');
-      for(var j=0;j<tabBtns.length;j++)tabBtns[j].classList.remove('active');
-      this.classList.add('active');
-      switchTab(newMode);
-    });
-  }
+    for(var col=-1;col<=maxCol;col++){
+      for(var row=-1;row<=maxRow;row++){
+        var cx=col*colSp;
+        var cy=row*rowSp+(col&1?rowSp/2:0);
+        var ll=unproject(cx,cy);
+        if(!inEngland(ll[0],ll[1]))continue;
 
-  // --- App card clicks ---
-  var appCards=document.querySelectorAll('.app-card');
-  for(var i=0;i<appCards.length;i++){
-    appCards[i].addEventListener('click',function(){
-      var appMode=this.getAttribute('data-app');
-      document.getElementById('demo').scrollIntoView({behavior:'smooth'});
-      setTimeout(function(){
-        for(var j=0;j<tabBtns.length;j++){
-          if(tabBtns[j].getAttribute('data-mode')===appMode){
-            tabBtns[j].classList.add('active');
-          }else{
-            tabBtns[j].classList.remove('active');
-          }
+        var seed=Math.round((ll[0]+90)*200)*100000+Math.round((ll[1]+180)*200);
+        var rng=mulberry32(seed);
+        var n1=rng(),n2=rng();
+
+        var maxW=0;
+        for(var i=0;i<CITIES.length;i++){
+          var c=CITIES[i];
+          var dlat=ll[0]-c[0],dlon=ll[1]-c[1];
+          var w=c[2]*Math.exp(-(dlat*dlat+dlon*dlon)/(2*c[2]*0.000003));
+          if(w>maxW)maxW=w;
         }
-        switchTab(appMode);
-      },400);
-    });
-  }
+        var urban=Math.min(1,maxW/120);
+        var latN=(ll[0]-49.95)/5.85;
+        var score=clamp(0.45*latN+0.35*urban+0.20*n1);
 
-  // --- Entrance animation ---
-  var animated=false;
-  function animateEntrance(){
-    if(animated)return;animated=true;
-    var start=performance.now(),dur=2200;
-
-    function frame(now){
-      var t=Math.min(1,(now-start)/dur);
-      var ease=1-Math.pow(1-t,3);
-
-      ctx.clearRect(0,0,W,H);
-      for(var i=0;i<hexes.length;i++){
-        var h=hexes[i];
-        var yN=h.cy/H;
-        var delay=(1-yN)*0.5;
-        var localT=Math.max(0,Math.min(1,(ease-delay)/0.5));
-        if(localT<=0)continue;
-
-        var scale=0.3+0.7*localT;
-        ctx.globalAlpha=localT;
-        drawHexPath(ctx,h.cx,h.cy,drawSize*scale);
-        ctx.fillStyle=scoreToColor(h[mode+'N']);
+        drawHex(ctx,cx,cy,ds);
+        ctx.fillStyle=scoreToColor(score);
+        ctx.globalAlpha=0.85;
         ctx.fill();
+        ctx.globalAlpha=1;
       }
-      ctx.globalAlpha=1;
-      if(t<1)requestAnimationFrame(frame);
-      else{drawOffscreen();compositeFrame();}
     }
-    requestAnimationFrame(frame);
   }
 
-  // --- Init ---
-  var observer=new IntersectionObserver(function(entries){
-    if(entries[0].isIntersecting){animateEntrance();observer.disconnect();}
-  },{threshold:0.15});
-
-  resize();
-  observer.observe(document.querySelector('.demo'));
+  render();
+  var resizeTimer;
   window.addEventListener('resize',function(){
-    resize();
-    if(animated){drawOffscreen();compositeFrame();}
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(render,150);
   });
+
+  var observer=new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){render();observer.disconnect();}
+  },{threshold:0.1});
+  observer.observe(canvas.parentElement);
 })();
 </script>
 </body>
